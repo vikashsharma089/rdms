@@ -9,11 +9,14 @@ var ALLCARD = function() {
         table = table + '<thead>';
         table = table + '<tr>';
         table = table + '<th scope="col">#</th>';
-        table = table + '<th scope="col">राशन कार्ड संख्या</th>';
-        table = table + '<th scope="col">धारक का नाम</th>';
-        table = table + '<th scope="col">पिता/पति का नाम</th>';
-        table = table + '<th scope="col">माता का नाम</th>';
-        table = table + '<th scope="col">कुल यूनिट</th>';
+        table = table + '<th scope="col">CardNo</th>';
+		table = table + '<th scope="col">Holder</th>';
+		table = table + '<th scope="col">Father/Husband</th>';
+		table = table + '<th scope="col">Mother Name</th>';
+		table = table + '<th scope="col">Unit</th>';
+		table = table + '<th scope="col">Purwa</th>';
+		
+        
 
         table = table + '</tr>';
         table = table + '</thead>';
@@ -31,7 +34,7 @@ var ALLCARD = function() {
 
         $("#mainContent").append(table);
         $("#cardTable").empty();
-        var response  = ajax.get("/rationcard/loadAll");
+        var response  = ajax.get("/rationcard/loadAll/"+villageId);
                 var obj = response.data;
                 var table = "";
                 var counter=1;
@@ -47,6 +50,8 @@ var ALLCARD = function() {
                     table = table + '<td>' + obj[i].fatherOrHusband + '</td>';
                     table = table + '<td>' + obj[i].motherName + '</td>';
                     table = table + '<td>' + obj[i].unit + '</td>';
+                    table = table + '<td>' + obj[i].purwa.purwaName+ '</td>';
+                    
                     table = table + '</tr>';
                     counter = counter+1;
                 }

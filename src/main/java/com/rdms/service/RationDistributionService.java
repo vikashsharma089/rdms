@@ -18,12 +18,16 @@ public class RationDistributionService {
 		return rationDistributionRepository.save(model);
 	}
 	
-	public List<RationDistribution> findByMonthId(Integer monthId) {
-		return rationDistributionRepository.findByMonthId(monthId);
+	public List<RationDistribution> findByStockId(Integer stockId) {
+		return rationDistributionRepository.findByStockId(stockId);
 	}
 	
-	public List<RationDistribution> findByMonthAndRationCardId(Integer monthId,Integer rationCardId) {
-		return rationDistributionRepository.findByMonthAndRationCardId(monthId, rationCardId);
+	public List<RationDistribution> findByStockAndRationCardId(Integer stockId,Integer rationCardId) {
+		return rationDistributionRepository.findByStockAndRationCardId(stockId, rationCardId);
 	}
 
+	public List<String> findDistributedCardByStockAndVillageId(Integer stockId,Integer villageId) {
+		return rationDistributionRepository.findDistributedCardByStockAndVillageId(stockId, villageId);
+	}
+	
 }

@@ -19,6 +19,18 @@ public class PurwaModel {
 	@Column(name = "purwa")
     private String purwaName;
 
+	
+	public PurwaModel() {
+		super();
+	}
+	
+
+	public PurwaModel(Integer iD) {
+		super();
+		ID = iD;
+	}
+
+
 	public Integer getID() {
 		return ID;
 	}

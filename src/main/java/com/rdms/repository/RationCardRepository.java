@@ -26,6 +26,9 @@ public interface RationCardRepository extends JpaRepository<RationCardModel, Int
 			 "p.cardNumber LIKE %?1" )
 	List<RationCardModel> searchRationCard(String searcyKey);
 	
+	@Query(value = "SELECT p FROM RationCardModel p  where p.cardNumber not in(?1) and p.village.ID=?2 ")
+	public List<RationCardModel> getAllRemaingRationCard(List<String> cardList, Integer villageId);
+	
 	
 
 }

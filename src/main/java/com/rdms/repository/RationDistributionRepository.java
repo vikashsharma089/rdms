@@ -14,9 +14,14 @@ public interface RationDistributionRepository extends JpaRepository< RationDistr
 
 	
 	@Query(value = "SELECT p FROM RationDistribution  p  where p.stock.ID =?1")
-	public List<RationDistribution> findByMonthId(Integer monthId);
+	public List<RationDistribution> findByStockId(Integer monthId);
 	
 	@Query(value = "SELECT p FROM RationDistribution  p  where p.stock.ID =?1 and p.rationCard.id =?2")
-	public List<RationDistribution> findByMonthAndRationCardId(Integer monthId,Integer rationCardId);
+	public List<RationDistribution> findByStockAndRationCardId(Integer stockId,Integer rationCardId);
+	
+	@Query(value = "SELECT p.rationCard.cardNumber FROM RationDistribution  p  where p.stock.ID =?1 and p.village.id =?2")
+	public List<String> findDistributedCardByStockAndVillageId(Integer stockId,Integer rationCardId);
+	
+	
 }
 

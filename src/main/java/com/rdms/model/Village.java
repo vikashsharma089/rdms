@@ -6,9 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "village")
+@Table(name = "village",uniqueConstraints = { @UniqueConstraint(columnNames = { "village", "block" }) })
 public class Village {
 
 	@Id
@@ -18,6 +19,9 @@ public class Village {
  
 	@Column(name = "village", nullable = false)
     private String villageName;
+
+	@Column(name = "block", nullable = false)
+    private String blockName;
 
 	public Integer getID() {
 		return ID;

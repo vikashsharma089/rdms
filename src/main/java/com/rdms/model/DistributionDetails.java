@@ -3,6 +3,7 @@ package com.rdms.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,8 +27,8 @@ public class DistributionDetails {
     private Integer ID;
 	
 	@JsonIgnore
-	@ManyToOne
-    @JoinColumn(name="distribution", nullable=false)
+	@ManyToOne()
+    @JoinColumn(name="distribution_id")
     private RationDistribution distribution;
 	
 	@Column(name = "quantity")

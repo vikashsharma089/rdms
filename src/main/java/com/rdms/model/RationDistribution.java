@@ -49,8 +49,22 @@ public class RationDistribution {
     private Village village;
 	
 	 @OneToMany(mappedBy="distribution")
+	 @OrderBy("stock_item")
 	 private Set<DistributionDetails> details;
+	 
+	 
 	
+	public RationDistribution() {
+		super();
+	}
+	
+
+	public RationDistribution(Integer iD) {
+		super();
+		ID = iD;
+	}
+
+
 	public Integer getID() {
 		return ID;
 	}

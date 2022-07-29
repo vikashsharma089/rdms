@@ -36,6 +36,10 @@ public class RationCardService {
 	
 	public List<RationCardModel> searchRationCard(String searchKeyword){
 		searchKeyword = searchKeyword;
-		return rationCardRepository.searchRationCard(searchKeyword)
-;	}
+		return rationCardRepository.searchRationCard(searchKeyword);
+	}
+	
+	public List<RationCardModel> getAllRemaingRationCard(List<String> cardList,Integer villageId){
+		return rationCardRepository.getAllRemaingRationCard(cardList, villageId);
+	}
 }

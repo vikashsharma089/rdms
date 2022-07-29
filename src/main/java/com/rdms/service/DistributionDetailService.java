@@ -17,5 +17,9 @@ public class DistributionDetailService {
 	public void saveAll(Set<DistributionDetails> models) {
 		distributionDetailRepository.saveAll(models);
 	}
+	
+	public DistributionDetails save(DistributionDetails model) {
+		return distributionDetailRepository.save(model);
+	}
 
 }
