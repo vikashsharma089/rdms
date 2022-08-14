@@ -47,7 +47,11 @@ public class Village {
 		ID = iD;
 	}
 
-	
-	
-	
+	public String getBlockName() {
+		return blockName;
+	}
+
+	public void setBlockName(String blockName) {
+		this.blockName = blockName;
+	}
 }

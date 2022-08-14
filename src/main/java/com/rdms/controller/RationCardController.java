@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.rdms.model.*;
+import com.rdms.service.PurwaService;
+import com.rdms.service.UserService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,10 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rdms.model.StockModel;
-import com.rdms.model.PurwaModel;
-import com.rdms.model.RationCardModel;
-import com.rdms.model.RationDistribution;
 import com.rdms.service.RationCardService;
 import com.rdms.service.RationDistributionService;
 
@@ -40,29 +39,35 @@ public class RationCardController {
 	
 	@Autowired
 	private RationCardService rationCardService;
+
+	 @Autowired
+	 private UserService userService;
 	
 	@Autowired 
 	private RationDistributionService rationDistributionService;
+
+	@Autowired
+	private PurwaService purwaService;
 	
 	@RequestMapping(value = "/upload" , method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE  })
     public ResponseEntity<Map<String,Object>> submitInspection(@RequestParam(value="file") MultipartFile filse) throws IOException{
 		
 		Map<String,Object> response = new HashMap ();
 		try {
-		
+
 		
 		Workbook workbook = new XSSFWorkbook(filse.getInputStream()); 
 		Sheet sheet  = workbook.getSheetAt(0);
 		List<String> availableRationCard = rationCardService.getAllRationCardNumberByVillageId(1);
 		List<RationCardModel> models = new ArrayList<RationCardModel>();
-		
-		
+
 		Iterator<Row> rows = sheet.iterator();
 		while (rows.hasNext()) {
 		  Row currentRow = rows.next();
 		  
 		  RationCardModel model = new RationCardModel();
-		  //model.setVillageId(1);
+			model.setVillage(userService.getVillage());
+
 
 		  Long cardNumberAsLong = ((long) currentRow.getCell(1).getNumericCellValue());
 		  String cardNumber = String.valueOf(cardNumberAsLong);
@@ -72,10 +77,10 @@ public class RationCardController {
 			  String motherName = currentRow.getCell(4).getStringCellValue();
 			  Integer  unit = (int) currentRow.getCell(5).getNumericCellValue();
 			  String cardType = currentRow.getCell(7).getStringCellValue();
-			  Integer purwaId = (int)(currentRow.getCell(8) == null ? 0 : currentRow.getCell(8).getNumericCellValue() );
-			  if(purwaId != 0) {
-				  model.setPurwa(new PurwaModel(purwaId)); 
-			  }
+			  //Integer purwaId = (int)(currentRow.getCell(8) == null ? 0 : currentRow.getCell(8).getNumericCellValue() );
+
+			  model.setPurwa(purwaService.findAllByVillage().get(0));
+
 			  model.setCardHolder(holderName);
 			  model.setFatherOrHusband(fatherOrHusband);
 			  model.setMotherName(motherName);
@@ -108,6 +113,8 @@ public class RationCardController {
     public ResponseEntity<Map<String,Object>> saveRationCard(@RequestBody RationCardModel model) throws IOException{
 		Map<String,Object> response = new HashMap ();
 		try {
+			model.setVillage(userService.getVillage());
+			model.setPurwa(purwaService.findAllByVillage().get(0));
 			 rationCardService.save(model);
 			 response.put("status", "success");
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -119,11 +126,10 @@ public class RationCardController {
 		
 		   
     }
-	@RequestMapping(value = "/loadAll/{villageId}", method = RequestMethod.GET,  produces="application/json")
-    public ResponseEntity<Map<String,Object>> loadAll(@PathVariable("villageId") String village ){
-		Integer villageId = Integer.valueOf(village);
+	@RequestMapping(value = "/loadAll", method = RequestMethod.GET,  produces="application/json")
+    public ResponseEntity<Map<String,Object>> loadAll(){
 		Map<String, Object> response = new HashMap();
-		response.put("data", rationCardService.getAllRationCardByVillageId(villageId));
+		response.put("data", rationCardService.getAllRationCardByVillageId());
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
     	
@@ -134,13 +140,13 @@ public class RationCardController {
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
     		
-	@RequestMapping(value = "/loadRemaining/{villageId}/{stockId}", method = RequestMethod.GET,  produces="application/json")
-    public ResponseEntity<Map<String,Object>> loadRemaining(@PathVariable("villageId") String village, @PathVariable("stockId") String stock ){
-		Integer villageId = Integer.valueOf(village);
+	@RequestMapping(value = "/loadRemaining/{stockId}", method = RequestMethod.GET,  produces="application/json")
+    public ResponseEntity<Map<String,Object>> loadRemaining(@PathVariable("stockId") String stock ){
+
 		Integer stockId = Integer.valueOf(stock);
-		List<String> distributedCards = rationDistributionService.findDistributedCardByStockAndVillageId(stockId, villageId);
+		List<String> distributedCards = rationDistributionService.findDistributedCardByStockAndVillageId(stockId);
 		Map<String, Object> response = new HashMap();
-		response.put("data", rationCardService.getAllRemaingRationCard(distributedCards, villageId));
+		response.put("data", rationCardService.getAllRemaingRationCard(distributedCards));
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
 

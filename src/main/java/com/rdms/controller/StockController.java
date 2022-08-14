@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import com.rdms.service.UserService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -47,6 +48,9 @@ public class StockController {
 	
 	@Autowired 
 	private MonthsService monthsService;
+
+	@Autowired
+	private UserService userService;
 	
 	@Autowired 
 	private StockDetailService stockDetailService;
@@ -55,10 +59,12 @@ public class StockController {
 		Map<String,Object> response = new HashMap ();
 		try {
 			model.setDistributed(false);
+			model.setVillage(userService.getVillage());
 			model =stockService.save(model);
 			Set<StockDetails> stockDetails = model.getItems();
 			for(StockDetails obj : stockDetails ) {
 				obj.setStock(model);
+				obj.setVillage(userService.getVillage());
 			}
 			stockDetailService.save(stockDetails);
 			response.put("status", "success");
@@ -71,11 +77,10 @@ public class StockController {
 		   
     }
 
-	@RequestMapping(value = "/loadPendingMonth/{villageId}", method = RequestMethod.GET,  produces="application/json")
-    public ResponseEntity<Map<String,Object>> loadAllPending(@PathVariable("villageId") String village ){
+	@RequestMapping(value = "/loadPendingMonth", method = RequestMethod.GET,  produces="application/json")
+    public ResponseEntity<Map<String,Object>> loadAllPending(){
 		Map<String, Object> response = new HashMap();
-		Integer villageId = Integer.valueOf(village);
-		response.put("data", stockService.loadAllPendingMonth(villageId));
+		response.put("data", stockService.loadAllPendingMonth());
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
 	

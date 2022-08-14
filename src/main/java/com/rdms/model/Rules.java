@@ -15,7 +15,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(name = "rules", uniqueConstraints={ @UniqueConstraint(columnNames = {"stock_item", "village"})})
+@Table(name = "rules")
 public class Rules {
 
 	@Id
@@ -25,7 +25,7 @@ public class Rules {
 	
 	@OneToOne()
     @Fetch(FetchMode.SELECT)
-    @JoinColumn(name = "stock_item", referencedColumnName = "ID",unique=true )
+    @JoinColumn(name = "stock_item", referencedColumnName = "ID" )
     private StockItem stockItem;
 	
 	@Column(name = "per_unit_card", nullable = false)

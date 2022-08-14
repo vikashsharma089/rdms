@@ -1,11 +1,9 @@
 package com.rdms.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "purwa")
@@ -19,6 +17,10 @@ public class PurwaModel {
 	@Column(name = "purwa")
     private String purwaName;
 
+	@OneToOne()
+	@Fetch(FetchMode.SELECT)
+	@JoinColumn(name = "village", referencedColumnName = "ID")
+	private Village village;
 	
 	public PurwaModel() {
 		super();
@@ -46,6 +48,12 @@ public class PurwaModel {
 	public void setPurwaName(String purwaName) {
 		this.purwaName = purwaName;
 	}
-	
-	
+
+	public Village getVillage() {
+		return village;
+	}
+
+	public void setVillage(Village village) {
+		this.village = village;
+	}
 }

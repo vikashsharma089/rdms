@@ -14,17 +14,20 @@ public class StockService {
 
 	@Autowired 
 	private StockRepository stockRepository;
+
+	@Autowired
+	private UserService userService;
 	
 	public StockModel save(StockModel model) {
 		return stockRepository.save(model);
 	}
 	
 	public List<StockModel> loadAllMonth() {
-		return (List<StockModel>)stockRepository.findAll();
+		return (List<StockModel>)stockRepository.findAllByVillage(userService.getVillage());
 	}
 	
-	public List<StockModel> loadAllPendingMonth(Integer villageId) {
-		return (List<StockModel>)stockRepository.loadAllPendingMonth(villageId);
+	public List<StockModel> loadAllPendingMonth() {
+		return (List<StockModel>)stockRepository.loadAllPendingMonth(userService.getVillage().getID());
 	}
 	
 	public Optional<StockModel> findMonthById(Integer id) {

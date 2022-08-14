@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.rdms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +24,8 @@ import com.rdms.model.StockModel;
 import com.rdms.model.DistributionDetails;
 import com.rdms.model.RationDistribution;
 import com.rdms.model.StockDetails;
-import com.rdms.service.StockService;
-import com.rdms.service.DistributionDetailService;
-import com.rdms.service.RationDistributionService;
-import com.rdms.service.StockDetailService;
 
 @RestController
-@Validated
 @CrossOrigin("*")
 @RequestMapping("/distribution")
 public class DistributionController {
@@ -45,6 +42,9 @@ public class DistributionController {
     @Autowired
     private StockDetailService stockDetailService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = {
         "application/json"
     })
@@ -58,6 +58,7 @@ public class DistributionController {
 
                 Map < Integer, Double > quantityMap = new HashMap();
                 distributionModel.setDistributedOn(Instant.now());
+                distributionModel.setVillage(userService.getVillage());
                 RationDistribution rationDistributionModel = rationDistributionService.save(distributionModel);
                
                 for (DistributionDetails distributionDetails: rationDistributionModel.getDetails()) {

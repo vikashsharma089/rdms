@@ -22,4 +22,10 @@ public class VillageService {
 		 return villageRepository.findById(villagId);
 	 }
 
+	 public Optional<Village> findByVillageName(String villageName) {
+
+		 return villageRepository.findByVillageName(villageName);
+	}
+
+
 }

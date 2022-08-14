@@ -38,6 +38,11 @@ public class StockDetails {
 	@Column(name = "quantity")
     private Double quantity;
 
+	@OneToOne()
+	@Fetch(FetchMode.SELECT)
+	@JoinColumn(name = "village", referencedColumnName = "ID")
+	private Village village;
+
 	public Integer getID() {
 		return ID;
 	}
@@ -69,7 +74,12 @@ public class StockDetails {
 	public void setStock(StockModel stock) {
 		this.stock = stock;
 	}
-	
-	
-	
+
+	public Village getVillage() {
+		return village;
+	}
+
+	public void setVillage(Village village) {
+		this.village = village;
+	}
 }

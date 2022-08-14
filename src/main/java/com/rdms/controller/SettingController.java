@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rdms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,20 +33,34 @@ public class SettingController {
 	
 	@Autowired 
 	private RuleService  ruleService;
+
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value = "/saveItems" , method = RequestMethod.POST, consumes = {"application/json"})
-    public ResponseEntity<Map<String,Object>> saveMonth(@RequestBody StockItem stockModel) throws IOException{
+    public ResponseEntity<Map<String,Object>> saveItem(@RequestBody StockItem stockModel) throws IOException{
 		Map<String,Object> response = new HashMap ();
 		try {
+			stockModel.setVillage(userService.getVillage());
 			stockModel =stockItemService.save(stockModel);
 			Rules  ruleModel = new Rules();
+			Rules  ruleModel2 = new Rules();
 			
 			ruleModel.setPerUnitOrCard("unit");
 			ruleModel.setKgPerUnitOrCard(2);
-			ruleModel.setRationCardType("all");
+			ruleModel.setRationCardType("a");
 			ruleModel.setVillage(stockModel.getVillage());
 			ruleModel.setStockItem(stockModel);
+			ruleModel.setVillage(userService.getVillage());
 			ruleService.save(ruleModel);
+
+			ruleModel2.setPerUnitOrCard("unit");
+			ruleModel2.setKgPerUnitOrCard(2);
+			ruleModel2.setRationCardType("b");
+			ruleModel2.setVillage(stockModel.getVillage());
+			ruleModel2.setStockItem(stockModel);
+			ruleModel2.setVillage(userService.getVillage());
+			ruleService.save(ruleModel2);
 			response.put("status", "success");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch(Exception e) {
@@ -86,19 +101,17 @@ public class SettingController {
 		   
     }
 	
-	@RequestMapping(value = "/loadItems/{villageId}", method = RequestMethod.GET,  produces="application/json")
-    public ResponseEntity<Map<String,Object>> loadItems(@PathVariable("villageId") String village ){
+	@RequestMapping(value = "/loadItems", method = RequestMethod.GET,  produces="application/json")
+    public ResponseEntity<Map<String,Object>> loadItems(){
 		Map<String, Object> response = new HashMap();
-		Integer villageId = Integer.valueOf(village);
-		response.put("data", stockItemService.findAllByVillage(villageId));
+		response.put("data", stockItemService.findAllByVillage());
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
 	
-	@RequestMapping(value = "/loadRules/{villageId}", method = RequestMethod.GET,  produces="application/json")
-    public ResponseEntity<Map<String,Object>> loadRules(@PathVariable("villageId") String village ){
+	@RequestMapping(value = "/loadRules", method = RequestMethod.GET,  produces="application/json")
+    public ResponseEntity<Map<String,Object>> loadRules( ){
 		Map<String, Object> response = new HashMap();
-		Integer villageId = Integer.valueOf(village);
-		response.put("data", ruleService.findByVillageId(villageId));
+		response.put("data", ruleService.findByVillageId());
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
 	

@@ -13,12 +13,15 @@ public class StockItemService {
 
 	@Autowired 
 	private StockItemRepository stockItemRepository;
+	@Autowired
+	private UserService userService;
 	
 	public StockItem save(StockItem model) {
 		return stockItemRepository.save(model);
 	}
 	
-	public List<StockItem> findAllByVillage(Integer villageId) {
-		return stockItemRepository.findAllByVillage(villageId);
+	public List<StockItem> findAllByVillage() {
+
+		return stockItemRepository.findAllByVillage(userService.getVillage().getID());
 	}
 }

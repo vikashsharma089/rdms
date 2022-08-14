@@ -28,7 +28,7 @@ public class StockItem {
 	@Column(name = "item_name")
     private String itemName;
 	
-	@Column(name = "item_name_small",unique = true)
+	@Column(name = "item_name_small")
 	 private String itemNameLowerCase;
 
 	 @PrePersist @PreUpdate private void prepare(){

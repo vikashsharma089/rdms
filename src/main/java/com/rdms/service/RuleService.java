@@ -13,13 +13,14 @@ public class RuleService {
 
 	@Autowired 
 	private RuleRepository ruleRepository;
-	
+	@Autowired
+	private UserService userService;
 	public Rules save(Rules model) {
 		return ruleRepository.save(model);
 	}
 	
-	public List<Rules> findByVillageId(Integer villageId) {
-		return ruleRepository.findByVillageId(villageId);
+	public List<Rules> findByVillageId() {
+		return ruleRepository.findByVillageId(userService.getVillage().getID());
 	}
 	
 }

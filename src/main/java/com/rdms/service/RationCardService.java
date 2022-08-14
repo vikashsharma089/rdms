@@ -13,7 +13,10 @@ import com.rdms.repository.RationCardRepository;
 public class RationCardService {
 	
 	@Autowired 
-	private RationCardRepository rationCardRepository; 
+	private RationCardRepository rationCardRepository;
+
+	@Autowired
+	private UserService userService;
 	
 	
 	public void saveAll(List<RationCardModel> models) {
@@ -27,19 +30,25 @@ public class RationCardService {
 	}
 
 	public List<String> getAllRationCardNumberByVillageId(Integer villageId){
+		villageId =userService.getVillage().getID();
 		return rationCardRepository.getAllRationCardNumberByVillageId(villageId);
 	}
 	
-	public List<RationCardModel> getAllRationCardByVillageId(Integer villageId){
+	public List<RationCardModel> getAllRationCardByVillageId(){
+		Integer villageId =userService.getVillage().getID();
 		return rationCardRepository.getAllRationCardByVillageId(villageId);
 	}
 	
 	public List<RationCardModel> searchRationCard(String searchKeyword){
-		searchKeyword = searchKeyword;
-		return rationCardRepository.searchRationCard(searchKeyword);
+		Integer villageId = userService.getVillage().getID();
+		return rationCardRepository.searchRationCard(searchKeyword,villageId);
 	}
 	
-	public List<RationCardModel> getAllRemaingRationCard(List<String> cardList,Integer villageId){
+	public List<RationCardModel> getAllRemaingRationCard(List<String> cardList){
+		Integer villageId = userService.getVillage().getID();
+		if(cardList.isEmpty()){
+			return rationCardRepository.getAllRationCardByVillageId(villageId);
+		}
 		return rationCardRepository.getAllRemaingRationCard(cardList, villageId);
 	}
 }
