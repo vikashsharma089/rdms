@@ -9,7 +9,7 @@ var DISTRIBUTE = function() {
         content = content + '<div class="card-body">'
         content = content + '<div class="dataTable-top"><div class="dataTable-dropdown row mb-3">'
         content = content + '<select class="dataTable-selector" id="monthSelector" onchange="distribute.changeTableHeader(this)" ><option value="">Select Stock</option></select>'
-        content = content + '</div><div class="dataTable-search row mb-3" style="float:left;"><input class="dataTable-input" id="searchId" onkeyup="distribute.searchCard(this)" placeholder="Search by ration card" type="text"></div></div>'
+        content = content + '</div><div class="dataTable-search row mb-3" style="float:left;"><input class="dataTable-input" id="searchId" onkeyup="distribute.searchCard(this)"  size="width:187px;margin-left: 34px;" placeholder="Search by ration card" type="text"></div></div>'
         content = content + '<table class="table datatable">'
         content = content + '<thead>'
         content = content + '<tr id="tblHeader">'
@@ -89,7 +89,7 @@ var DISTRIBUTE = function() {
             var counter = 1;
             for (var i = 0; i < obj.length; i++) {
                 var items = [];
-                if (obj[i].cartType == "b") {
+                if (obj[i].cartType == "AAY") {
                     table = table + '<tr class="table-danger">';
                 } else {
                     table = table + '<tr class="table-light">';

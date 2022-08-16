@@ -10,7 +10,7 @@ var DVIEW = function(){
         content = content + '<div class="card-body">'
         content = content + '<div class="dataTable-top"><div class="dataTable-dropdown">'
         content = content + '<select class="dataTable-selector" id="monthSelector" onchange="dview.loadDistribution(this)" ><option value="">Select Month</option></select>'
-        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>Antyodaya:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3"><label>BPL:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Print</button></div>     </div></div>'
+        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>PHH:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: #eb7575"><label>AAY:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Print</button></div>     </div></div>'
         content = content + '<table class="table datatable" id="basic-table" >'
         content = content + '<thead>'
         content = content + '<tr id="tblHeader">'
@@ -49,7 +49,7 @@ var DVIEW = function(){
         var bpl =0;
         var ant =0;
         for (var i = 0; i < obj.length; i++) {
-            if (obj[i].rationCard.cartType == "b") {
+            if (obj[i].rationCard.cartType == "AAY") {
                 table = table + '<tr class="table-danger">';
                 bpl= bpl+1;
             } else {
@@ -87,7 +87,7 @@ var DVIEW = function(){
         table = table + '<div class="card-body">'
         table = table + '<div class="dataTable-top"><div class="dataTable-dropdown">'
         table = table + '<select class="dataTable-selector" id="monthSelector" onchange="dview.appendRemainigCard(this)" ><option value="">Select Month</option></select>'
-        table = table + '</div><div class="card-body row" style="width:65%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-4"><label>Antyodaya:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-4"><label>BPL:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>  </div></div>'
+        table = table + '</div><div class="card-body row" style="width:65%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-4"><label>PHH:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-4" style="color: #eb7575;"><label>AAY:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>  </div></div>'
 
         table = table + '<table class="table">';
         table = table + '<thead>';
@@ -125,7 +125,7 @@ var DVIEW = function(){
         var bpl =0;
         var ant =0;
         for (var i = 0; i < obj.length; i++) {
-            if (obj[i].cartType == "b") {
+            if (obj[i].cartType == "AAY") {
                 table = table + '<tr class="table-danger">';
                 bpl = bpl+1;
             } else {

@@ -111,9 +111,8 @@ var SETTING = function() {
         table = table + '<label for="inputEmail3" class="col-sm-3 col-form-label">For Card</label>'
         table = table + '<div class="col-sm-7">'
         table = table + '<select class="form-select" aria-label="Default select example" id="cardType">'
-        table = table + '<option value="all">All</option>'
-        table = table + '<option value="a">Antyodaya</option>'
-        table = table + '<option value="b">BPL</option>'
+        table = table + '<option value="PHH">PHH</option>'
+        table = table + '<option value="AAY">BPL</option>'
         table = table + '</select>'
         table = table + '</div>'
         table = table + '</div>'
@@ -235,9 +234,8 @@ var SETTING = function() {
 
     this.loadRules = function() {
         var map = {};
-        map["all"] = "All";
-        map["b"] = "BPL";
-        map["a"] = "Antyodaya";
+        map["AAY"] = "AAY";
+        map["PHH"] = "PHH";
         var response = ajax.get("/setting/loadRules");
         $("#ruleTable").empty();
         var obj = response.data;
@@ -246,7 +244,11 @@ var SETTING = function() {
         for (var i = 0; i < obj.length; i++) {
 
             var cardType = map[obj[i].rationCardType]
-            table = table + '<tr class="table-light">';
+            if (cardType == "AAY") {
+                table = table + '<tr class="table-danger">';
+            } else {
+                table = table + '<tr class="table-light">';
+            }
             table = table + '<td scope="row">' + counter + '</td>';
             table = table + '<td scope="row">' + obj[i].stockItem.itemName + '</td>';
             table = table + '<td scope="row">' + obj[i].perUnitOrCard + '</td>';

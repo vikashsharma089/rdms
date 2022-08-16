@@ -48,7 +48,7 @@ public class SettingController {
 			
 			ruleModel.setPerUnitOrCard("unit");
 			ruleModel.setKgPerUnitOrCard(2);
-			ruleModel.setRationCardType("a");
+			ruleModel.setRationCardType("PHH");
 			ruleModel.setVillage(stockModel.getVillage());
 			ruleModel.setStockItem(stockModel);
 			ruleModel.setVillage(userService.getVillage());
@@ -56,7 +56,7 @@ public class SettingController {
 
 			ruleModel2.setPerUnitOrCard("unit");
 			ruleModel2.setKgPerUnitOrCard(2);
-			ruleModel2.setRationCardType("b");
+			ruleModel2.setRationCardType("AAY");
 			ruleModel2.setVillage(stockModel.getVillage());
 			ruleModel2.setStockItem(stockModel);
 			ruleModel2.setVillage(userService.getVillage());

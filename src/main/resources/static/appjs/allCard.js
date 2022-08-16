@@ -40,7 +40,7 @@ var ALLCARD = function() {
         var table = "";
         var counter=1;
         for (var i = 0; i < obj.length; i++) {
-            if (obj[i].cartType == "b") {
+            if (obj[i].cartType == "AAY") {
                 table = table + '<tr class="table-danger">';
             } else {
                 table = table + '<tr class="table-light">';
@@ -113,8 +113,8 @@ var ALLCARD = function() {
         content = content+'<label class="col-sm-2 col-form-label">Card Type</label>'
         content = content+'<div class="col-sm-10">'
         content = content+'<select class="form-select" aria-label="Default select example" id="cardType">'
-        content = content+'<option value="a">Antyodaya</option>'
-        content = content+'<option value="b">BPL</option>'
+        content = content+'<option value="PHH">PHH</option>'
+        content = content+'<option value="AAY">AAY</option>'
 
         content = content+'</select>'
         content = content+'</div>'
