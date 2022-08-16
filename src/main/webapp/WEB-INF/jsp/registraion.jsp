@@ -1,13 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="ISO-8859-1">
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -244,9 +238,8 @@
         obj["email"]= email;
         obj["userName"]= userName;
         obj["password"]= password;
-        var response = ajax.post(url, obj);
-
-        if (response.status == "success") {
+       var response = ajax.post(url, obj);
+     if (response.status == "success") {
             ajax.alert("success", "Your registration is successfull , Please login to access application");
         } else {
             ajax.alert("error", response.error);
