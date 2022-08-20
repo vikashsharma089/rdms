@@ -161,7 +161,7 @@ var DVIEW = function(){
     this.print = function(){
         var monthId = $("#monthSelector").val();
         window.open(
-            'http://localhost/report/download/'+monthId,
+            'http://69.49.229.123/report/download/'+monthId,
             '_blank' // <- This is what makes it open in a new window.
         );
     }
