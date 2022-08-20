@@ -75,11 +75,12 @@ public class RationCardController {
 			  String holderName = currentRow.getCell(2).getStringCellValue().trim();
 			  String fatherOrHusband = currentRow.getCell(3).getStringCellValue().trim();
 			  String motherName = currentRow.getCell(4).getStringCellValue().trim();
-			  Integer  unit = Integer.valueOf(currentRow.getCell(5).getStringCellValue().trim());
+			  Integer  unit = Integer.valueOf(currentRow.getCell(5).getStringCellValue().replace("\u00a0","").trim());
 			  String cardType = currentRow.getCell(7).getStringCellValue().trim();
 			  //Integer purwaId = (int)(currentRow.getCell(8) == null ? 0 : currentRow.getCell(8).getNumericCellValue() );
 
 			  model.setPurwa(purwaService.findAllByVillage().get(0));
+
 
 			  model.setCardHolder(holderName);
 			  model.setFatherOrHusband(fatherOrHusband);
