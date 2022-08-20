@@ -119,6 +119,8 @@ public class RationDistribution {
 	}
 
 	public Double getTotalAmount() {
+		if(totalAmount == null)
+			totalAmount = 0.0;
 		return totalAmount;
 	}
 

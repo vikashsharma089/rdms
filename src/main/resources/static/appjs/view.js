@@ -10,7 +10,7 @@ var DVIEW = function(){
         content = content + '<div class="card-body">'
         content = content + '<div class="dataTable-top"><div class="dataTable-dropdown">'
         content = content + '<select class="dataTable-selector" id="monthSelector" onchange="dview.loadDistribution(this)" ><option value="">Select Month</option></select>'
-        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>PHH:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: #eb7575"><label>AAY:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Print</button></div>     </div></div>'
+        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>PHH:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: #eb7575"><label>AAY:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Download</button></div>     </div></div>'
         content = content + '<table class="table datatable" id="basic-table" >'
         content = content + '<thead>'
         content = content + '<tr id="tblHeader">'
@@ -159,40 +159,10 @@ var DVIEW = function(){
 
 
     this.print = function(){
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        //doc.fromHTML($('#basic-table').get(0));
-
-
-        specialElementHandlers = {
-            // element with id of "bypass" - jQuery style selector
-            '#bypassme': function (element, renderer) {
-                // true = "handled elsewhere, bypass text extraction"
-                return true
-            }
-        };
-
-        margins = {
-            top: 20,
-            bottom: 60,
-            left: 10,
-            width: 1500
-        };
-        // all coords and widths are in jsPDF instance's declared units
-        // 'inches' in this case
-        pdf.fromHTML(
-            $('#cards').get(0), // HTML string or DOM elem ref.
-            margins.left, // x coord
-            margins.top, { // y coord
-                'width': margins.width,
-                'elementHandlers': specialElementHandlers
-            },
-
-            function (dispose) {
-                // dispose: object with X, Y of the last line add to the PDF
-                //          this allow the insertion of new lines after html
-                pdf.save('Test.pdf');
-            }, margins
+        var monthId = $("#monthSelector").val();
+        window.open(
+            'http://localhost/report/download/'+monthId,
+            '_blank' // <- This is what makes it open in a new window.
         );
-        //doc.save("table.pdf");
     }
 }
