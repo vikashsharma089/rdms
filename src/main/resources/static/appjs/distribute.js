@@ -66,7 +66,7 @@ var DISTRIBUTE = function() {
                 $("#tblHeader").append('<th scope="col">'+jsonData[i].stockItem.itemName+'</th>')
             }
         }
-
+        $("#tblHeader").append('<th scope="col">Amount</th>');
         $("#tblHeader").append('<th scope="col">Action</th>');
 
     }
@@ -108,8 +108,11 @@ var DISTRIBUTE = function() {
                         var totalQuantity = 0;
 
                             totalQuantity = distribute.getTotalCalculatedKg(config,unit)
+                        totalAmount = distribute.getTotalCalculatedAmount(config,totalQuantity)
                         table = table + '<td scope="col">'+totalQuantity+'</td>';
+                        table = table + '<td scope="col">'+totalAmount+'</td>';
                         map["quantity"] =totalQuantity;
+                        map["amount"] =totalAmount;
                         map["stockItem"] ={"id":jsonData[j].stockItem.id};
                         items.push(map);
                     }
@@ -133,6 +136,14 @@ var DISTRIBUTE = function() {
             totalkg = 1*config.kgPerUnitOrCard;
         }
         return totalkg;
+
+    }
+
+    this.getTotalCalculatedAmount= function (config, quantity){
+        var totalAmount =0;
+        totalAmount  = quantity * config.rate;
+        return totalAmount;
+
     }
 
     this.addTtoDistributed = function(rationId,obj) {

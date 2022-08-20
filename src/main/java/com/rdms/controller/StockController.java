@@ -65,6 +65,7 @@ public class StockController {
 			for(StockDetails obj : stockDetails ) {
 				obj.setStock(model);
 				obj.setVillage(userService.getVillage());
+				obj.setInitalQuantiy(obj.getQuantity());
 			}
 			stockDetailService.save(stockDetails);
 			response.put("status", "success");

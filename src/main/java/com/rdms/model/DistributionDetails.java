@@ -34,6 +34,9 @@ public class DistributionDetails {
 	@Column(name = "quantity")
     private Double quantity;
 
+	@Column(name = "amount")
+	private Double amount;
+
 	@OneToOne
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "stock_item", referencedColumnName = "ID")
@@ -70,8 +73,16 @@ public class DistributionDetails {
 	public void setStockItem(StockItem stockItem) {
 		this.stockItem = stockItem;
 	}
-	
-	
-	
+
+	public Double getAmount() {
+		if(amount == null){
+			amount = 0.0;
+		}
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 }
 

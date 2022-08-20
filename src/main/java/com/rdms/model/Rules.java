@@ -36,6 +36,9 @@ public class Rules {
 
 	@Column(name = "cardType", nullable = false)
     private String rationCardType;
+
+	@Column(name = "rate")
+	private Double rate;
 	
 	@OneToOne()
     @Fetch(FetchMode.SELECT)
@@ -90,9 +93,12 @@ public class Rules {
 	public void setVillage(Village village) {
 		this.village = village;
 	}
-	
-	
-	
-	
-	
+
+	public Double getRate() {
+		return rate;
+	}
+
+	public void setRate(Double rate) {
+		this.rate = rate;
+	}
 }

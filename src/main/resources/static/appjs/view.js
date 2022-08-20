@@ -61,10 +61,13 @@ var DVIEW = function(){
             table = table + '<td>' + obj[i].rationCard.cardHolder + '</td>';
             table = table + '<td>' + obj[i].rationCard.fatherOrHusband + '</td>';
             table = table + '<td>' + obj[i].rationCard.unit + '</td>';
+
             var detais = obj[i].details;
             for(var j=0; j<detais.length; j++){
                 table = table + '<td>' + detais[j].quantity + ' Kg.</td>';
+                table = table + '<td>' + detais[j].amount + ' Rs.</td>';
             }
+
             table = table + '<td></td>';
             table = table + '</tr>';
             counter = counter+1;

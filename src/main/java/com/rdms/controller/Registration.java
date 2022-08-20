@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +75,7 @@ public class Registration {
 
         usersModel.setActive(true);
         usersModel.setMobile(registrationInput.getMobile());
+        usersModel.setRegistratoinDate(new Date());
         usersModel.setUserName(registrationInput.getUserName());
         usersModel.setUserNameLower(registrationInput.getUserName().toLowerCase());
         //usersModel.setPassword(new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A).encode(registrationInput.getPassword().trim()));

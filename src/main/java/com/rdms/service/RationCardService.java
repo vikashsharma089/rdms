@@ -51,4 +51,12 @@ public class RationCardService {
 		}
 		return rationCardRepository.getAllRemaingRationCard(cardList, villageId);
 	}
+
+	public Integer getAllRemaingRationCardCount(List<String> cardList){
+		Integer villageId = userService.getVillage().getID();
+		if(cardList.isEmpty()){
+			return rationCardRepository.getAllRationCardByVillageIdCount(villageId);
+		}
+		return rationCardRepository.getAllRemaingRationCardCount(cardList, villageId);
+	}
 }

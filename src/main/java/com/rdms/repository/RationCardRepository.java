@@ -17,6 +17,9 @@ public interface RationCardRepository extends JpaRepository<RationCardModel, Int
 	
 	@Query(value = "SELECT p FROM RationCardModel p  where p.village.ID=?1")
 	List<RationCardModel> getAllRationCardByVillageId(Integer villageId);
+
+	@Query(value = "SELECT COUNT(p.ID) AS ID FROM RationCardModel p  where p.village.ID=?1")
+	Integer getAllRationCardByVillageIdCount(Integer villageId);
 	
 	/*
 	 * @Query("SELECT p FROM RationCardModel p WHERE " +
@@ -28,6 +31,9 @@ public interface RationCardRepository extends JpaRepository<RationCardModel, Int
 	
 	@Query(value = "SELECT p FROM RationCardModel p  where p.cardNumber not in(?1) and p.village.ID=?2 ")
 	public List<RationCardModel> getAllRemaingRationCard(List<String> cardList, Integer villageId);
+
+	@Query(value = "SELECT COUNT(p.ID) as ID FROM RationCardModel p  where p.cardNumber not in(?1) and p.village.ID=?2 ")
+	public Integer getAllRemaingRationCardCount(List<String> cardList, Integer villageId);
 	
 	
 

@@ -38,6 +38,9 @@ public class StockDetails {
 	@Column(name = "quantity")
     private Double quantity;
 
+	@Column(name = "initalQuantity")
+	private Double initalQuantiy;
+
 	@OneToOne()
 	@Fetch(FetchMode.SELECT)
 	@JoinColumn(name = "village", referencedColumnName = "ID")
@@ -81,5 +84,13 @@ public class StockDetails {
 
 	public void setVillage(Village village) {
 		this.village = village;
+	}
+
+	public Double getInitalQuantiy() {
+		return initalQuantiy;
+	}
+
+	public void setInitalQuantiy(Double initalQuantiy) {
+		this.initalQuantiy = initalQuantiy;
 	}
 }

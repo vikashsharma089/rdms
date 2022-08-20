@@ -17,6 +17,6 @@ public interface StockRepository extends JpaRepository<StockModel, Integer>  {
 	List<StockModel> loadAllPendingMonth(Integer villageId);
 
 
-	List<StockModel> findAllByVillage(Village village);
+	List<StockModel> findAllByVillageOrderByIDDesc(Village village);
 
 }

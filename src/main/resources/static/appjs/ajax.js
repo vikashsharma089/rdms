@@ -100,19 +100,21 @@ var AJAX = function() {
     this.alert = function(status, message) {
         $('#alert').fadeIn( "fast" );
         $("#alert").empty();
+        $("#alert").css({"top":"40%","width":"92%"});
         var html;
         if (status == "success") {
-            html = '<div class="alert alert-success alert-dismissible fade show" role="alert">'
+            html = '<div class="alert alert-success alert-dismissible fade show"  style="" role="alert">'
             html = html + '<i class="bi bi-check-circle me-1"></i>' + message + ''
             html = html + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
             html = html + '</div>'
         } else {
-            html = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+            html = '<div class="alert alert-danger alert-dismissible fade show" style="position:absolute;width:40%;left: 25%;z-index:9;left:40%" role="alert">'
             html = html + '<i class="bi bi-exclamation-octagon me-1"></i>' + message + ''
             html = html + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
             html = html + '</div>'
         }
         $("#alert").append(html);
+
         $('#alert').delay(1000).fadeOut('slow');
     }
 

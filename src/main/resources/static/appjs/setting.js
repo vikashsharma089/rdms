@@ -110,10 +110,17 @@ var SETTING = function() {
         table = table + '<div class="row mb-3">'
         table = table + '<label for="inputEmail3" class="col-sm-3 col-form-label">For Card</label>'
         table = table + '<div class="col-sm-7">'
-        table = table + '<select class="form-select" aria-label="Default select example" id="cardType">'
+        table = table + '<select class="form-select" aria-label="Default select example" disabled id="cardType">'
         table = table + '<option value="PHH">PHH</option>'
-        table = table + '<option value="AAY">BPL</option>'
+        table = table + '<option value="AAY">AAY</option>'
         table = table + '</select>'
+        table = table + '</div>'
+        table = table + '</div>'
+
+        table = table + '<div class="row mb-3">'
+        table = table + '<label for="inputEmail3" class="col-sm-3 col-form-label">Rate</label>'
+        table = table + '<div class="col-sm-7">'
+        table = table + '<input type="number" class="form-control" id="rate" required placeholder="Rate per Kg.">'
         table = table + '</div>'
         table = table + '</div>'
 
@@ -135,7 +142,8 @@ var SETTING = function() {
         table = table + '<th scope="col">Item</th>'
         table = table + '<th scope="col">By</th>'
         table = table + '<th scope="col">K.G.</th>'
-        table = table + '<th scope="col">Card Type</th>'
+        table = table + '<th scope="col">Card</th>'
+        table = table + '<th scope="col">Rate</th>'
         table = table + '<th scope="col">Action</th>'
         table = table + '</tr>'
         table = table + '</thead>'
@@ -188,6 +196,7 @@ var SETTING = function() {
         var stockId = $("#ruleItemName").attr("data");
         var by = $("#distributeBy").val();
         var kg = $("#kg").val();
+        var rate = $("#rate").val();
         var cardType = $("#cardType").val();
 
 
@@ -196,9 +205,8 @@ var SETTING = function() {
         obj["perUnitOrCard"] = by;
         obj["kgPerUnitOrCard"] = kg;
         obj["rationCardType"] = cardType;
-        obj["village"] = {
-            "id": villageId
-        };
+        obj["rate"] = rate;
+
         obj["stockItem"]={"id":stockId}
         var url = "/setting/updateRule"
 
@@ -208,6 +216,7 @@ var SETTING = function() {
             $("#closepopup2").click();
 
             setting.loadRules();
+            functionLoadConfig();
         } else {
             ajax.alert("error", response.error)
         }
@@ -254,6 +263,7 @@ var SETTING = function() {
             table = table + '<td scope="row">' + obj[i].perUnitOrCard + '</td>';
             table = table + '<td scope="row">' + obj[i].kgPerUnitOrCard + '</td>';
             table = table + '<td scope="row">' +cardType + '</td>';
+            table = table + '<td scope="row">' + obj[i].rate + '</td>';
             table = table + '<td><i class="bx bxs-edit"  onclick="setting.editRuleDetail(' + obj[i].id + ',this,' + obj[i].stockItem.id + ')" data="' + window.btoa(JSON.stringify(obj[i])) +' "> </i></td>'
             table = table + '</tr>';
             counter = counter + 1;
@@ -271,6 +281,7 @@ var SETTING = function() {
         $("#distributeBy").val(ruleObj.perUnitOrCard);
         $("#kg").val(ruleObj.kgPerUnitOrCard);
         $("#cardType").val(ruleObj.rationCardType);
+        $("#rate").val(ruleObj.rate);
         $("#ruleItemName").attr("data",stockId);
     }
 

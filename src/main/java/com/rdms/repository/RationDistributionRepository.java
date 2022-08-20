@@ -13,7 +13,7 @@ import com.rdms.model.RationDistribution;
 public interface RationDistributionRepository extends JpaRepository< RationDistribution, Integer>  {
 
 	
-	@Query(value = "SELECT p FROM RationDistribution  p  where p.stock.ID =?1 and p.village.ID =?2")
+	@Query(value = "SELECT p FROM RationDistribution  p  where p.stock.ID =?1 and p.village.ID =?2 order by p.ID DESC")
 	public List<RationDistribution> findByStockId(Integer monthId,Integer villageId);
 	
 	@Query(value = "SELECT p FROM RationDistribution  p  where p.stock.ID =?1 and p.rationCard.ID =?2 and p.village.ID =?3")

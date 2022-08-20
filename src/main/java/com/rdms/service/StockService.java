@@ -23,7 +23,7 @@ public class StockService {
 	}
 	
 	public List<StockModel> loadAllMonth() {
-		return (List<StockModel>)stockRepository.findAllByVillage(userService.getVillage());
+		return (List<StockModel>)stockRepository.findAllByVillageOrderByIDDesc(userService.getVillage());
 	}
 	
 	public List<StockModel> loadAllPendingMonth() {

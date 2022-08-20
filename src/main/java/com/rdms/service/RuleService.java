@@ -16,6 +16,7 @@ public class RuleService {
 	@Autowired
 	private UserService userService;
 	public Rules save(Rules model) {
+		model.setVillage(userService.getVillage());
 		return ruleRepository.save(model);
 	}
 	
