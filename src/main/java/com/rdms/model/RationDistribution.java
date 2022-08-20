@@ -47,7 +47,11 @@ public class RationDistribution {
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "village_id", referencedColumnName = "ID")
     private Village village;
-	
+
+	@Column(name = "total_amount")
+	private Double totalAmount;
+
+
 	 @OneToMany(mappedBy="distribution")
 	 @OrderBy("stock_item")
 	 private Set<DistributionDetails> details;
@@ -114,7 +118,12 @@ public class RationDistribution {
 		this.village = village;
 	}
 
-	
-	
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 }
 

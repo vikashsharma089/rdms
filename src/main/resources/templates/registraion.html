@@ -66,13 +66,231 @@
                                 </div>
 
                                 <form class="row g-3 needs-validation" novalidate>
-
-
                                     <div class="col-12">
+                                        <label for="yourblock" class="form-label">Your Block</label>
+                                        <select class="form-select" aria-label="Default select example" id="yourblock" onchange="showVillage(this)">
+                                            <option value="">Select Block</option>
+                                            <option value="Haisarbazar">Haisar Bazar</option>
+                                            <option value="Nathnagar">Nath Nagar</option>
+                                            <option value="Pauli">Pauli</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-12 allVillage" id="Haisarbazar" style="display: none;">
                                         <label for="yourVillage" class="form-label">Your Village</label>
 
-                                            <select class="form-select" aria-label="Default select example" id="yourVillage">
-                                                <option>Select Your Village</option>
+                                        <select class="form-select" aria-label="Default select example" id="Haisarbazar_village">
+
+
+                                            <option value="3174001001">AGAPUR GULARIYA</option>
+                                            <option value="3174001002">AHARA</option>
+                                            <option value="3174001003">ASRAFPUR</option>
+                                            <option value="3174001004">AURA DAD</option>
+                                            <option value="3174001005">BABHNAULI</option>
+                                            <option value="3174001006">BADGO</option>
+                                            <option value="3174001007">BAHRADADI</option>
+                                            <option value="3174001009">BAIJNATHPUR</option>
+                                            <option value="3174001078">BAIKUNTHPUR</option>
+                                            <option value="3174001010">BAKAULI KALA</option>
+                                            <option value="3174001011">BALAMPUR</option>
+                                            <option value="3174001012">BANDA BAZAR</option>
+                                            <option value="3174001013">BANTVAR</option>
+                                            <option value="3174001079">BARAINIYA PAKADI</option>
+                                            <option value="3174001086">Baranw</option>
+                                            <option value="3174001032">BARIDEEHA</option>
+                                            <option value="3174001008">BARPARWA</option>
+                                            <option value="3174001015">BASWARI GAVN</option>
+                                            <option value="3174001016">BELAMA</option>
+                                            <option value="3174001017">BELAURA</option>
+                                            <option value="3174001018">BHAINSA KHUT</option>
+                                            <option value="3174001019">BHAISHAHI</option>
+                                            <option value="3174001085">BHARATPUR</option>
+                                            <option value="3174001050">BHARWAL PARVATA</option>
+                                            <option value="3174001022">CHAPARA PRUVI</option>
+                                            <option value="3174001023">DADARWAR</option>
+                                            <option value="3174001024">DEBARI</option>
+                                            <option value="3174001025">DHANGHTA</option>
+                                            <option value="3174001026">DUDHARA KALA</option>
+                                            <option value="3174001087">Dudhra Urf Khaira</option>
+                                            <option value="3174001027">DUHIYA KHURD</option>
+                                            <option value="3174001028">DUHIYAKALA</option>
+                                            <option value="3174001029">FULUYI</option>
+                                            <option value="3174001030">GAGAR GAD</option>
+                                            <option value="3174001031">GAI BASANTPUR</option>
+                                            <option value="3174001088">Gaighat II</option>
+                                            <option value="3174001033">GAYGHAT</option>
+                                            <option value="3174001034">GHORANG</option>
+                                            <option value="3174001035">GOPIPUR</option>
+                                            <option value="3174001036">HAISAR BAZAR</option>
+                                            <option value="3174001037">HAKIMPUR</option>
+                                            <option value="3174001038">JAGDISHPUR</option>
+                                            <option value="3174001039">JIGINA</option>
+                                            <option value="3174001040">KANAILA</option>
+                                            <option value="3174001041">KARAMA</option>
+                                            <option value="3174001043">KATAR MISHRA</option>
+                                            <option value="3174001044">KATYA</option>
+                                            <option value="3174001045">KHAJO</option>
+                                            <option value="3174001046">KOCHARI</option>
+                                            <option value="3174001093">Kodaicha</option>
+                                            <option value="3174001048">KURMAUL</option>
+                                            <option value="3174001049">LAHURE GAVN</option>
+                                            <option value="3174001053">MADRA</option>
+                                            <option value="3174001051">MALAULI</option>
+                                            <option value="3174001089">Manikapar</option>
+                                            <option value="3174001052">MAUR</option>
+                                            <option value="3174001054">MITHNA SITHNA</option>
+                                            <option value="3174001083">MUDERA RAY</option>
+                                            <option value="3174001056">MUNDERA SHUKLA</option>
+                                            <option value="3174001057">NATVAVAR</option>
+                                            <option value="3174001058">NAVAN KHURD</option>
+                                            <option value="3174001090">Netwapur</option>
+                                            <option value="3174001060">PARASAHAR PURVI</option>
+                                            <option value="3174001061">PARSAKALA</option>
+                                            <option value="3174001091">Patijew</option>
+                                            <option value="3174001059">PATTI BARA HISSA SMOGAR</option>
+                                            <option value="3174001062">PRAJAPATI PUR</option>
+                                            <option value="3174001063">RAJNAULI</option>
+                                            <option value="3174001092">Ram Jangala</option>
+                                            <option value="3174001064">RAMPUR (MADHAY)</option>
+                                            <option value="3174001084">RAMPUR DAKHANI</option>
+                                            <option value="3174001082">RAMPUR UTTARI</option>
+                                            <option value="3174001065">RUPIN</option>
+                                            <option value="3174001066">SANTHI</option>
+                                            <option value="3174001068">SEMAR DADI</option>
+                                            <option value="3174001069">SEMARI</option>
+                                            <option value="3174001070">SIRASI</option>
+                                            <option value="3174001067">SIYAR KHURD</option>
+                                            <option value="3174001081">SONADI</option>
+                                            <option value="3174001071">SONDIHA</option>
+                                            <option value="3174001072">SURAINA</option>
+                                            <option value="3174001074">TAMA</option>
+                                            <option value="3174001073">TANDA</option>
+                                            <option value="3174001075">THAKURADAD</option>
+                                            <option value="3174001076">TURKAULIYA NAYAK</option>
+                                            <option value="3174001077">UMARIYA BAZAR</option>
+
+                                        </select>
+
+                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                    </div>
+                                    <div class="col-12 allVillage" id="Nathnagar" style="display: none;">
+                                        <label for="yourVillage" class="form-label">Your Village</label>
+
+                                        <select class="form-select" aria-label="Default select example" id="Nathnagar_village">
+
+                                            <option value="3174004055">ACCHATI</option>
+                                            <option value="3174004001">ALINAGAR</option>
+                                            <option value="3174004105">Ammadei</option>
+                                            <option value="3174004107">Atraulia Urf Mathia</option>
+                                            <option value="3174004002">BAGHARI URF PARASADIPUR</option>
+                                            <option value="3174004004">BALAHI</option>
+                                            <option value="3174004005">BANDHUPUR</option>
+                                            <option value="3174004006">BARAULI</option>
+                                            <option value="3174004007">BARIDEEHA</option>
+                                            <option value="3174004041">BELDUHA</option>
+                                            <option value="3174004009">BELHARA</option>
+                                            <option value="3174004010">BELRAYI</option>
+                                            <option value="3174004097">Belwa</option>
+                                            <option value="3174004003">BHAGAUTIPUR</option>
+                                            <option value="3174004013">BHAGVANPUR PACHHMI</option>
+                                            <option value="3174004012">BHAGVANPUR PURVI</option>
+                                            <option value="3174004111">BHAISAHI URF BHAISWARIA</option>
+                                            <option value="3174004016">BHINKHINI KHURD</option>
+                                            <option value="3174004091">BHITIKINI</option>
+                                            <option value="3174004014">BHITIMAFI</option>
+                                            <option value="3174004011">BHOGIPUR</option>
+                                            <option value="3174004103">Chandapar</option>
+                                            <option value="3174004017">CHAVARIYA</option>
+                                            <option value="3174004018">CHITAHI</option>
+                                            <option value="3174004019">CHOLKHARI</option>
+                                            <option value="3174004020">DAHRAULI</option>
+                                            <option value="3174004100">Deokali Khurd</option>
+                                            <option value="3174004022">DHANJAWAL</option>
+                                            <option value="3174004023">DHAWAREPAR BADHYA</option>
+                                            <option value="3174004021">DHAYPOKHAR</option>
+                                            <option value="3174004084">GAJADHARPUR</option>
+                                            <option value="3174004025">GALIMPUR</option>
+                                            <option value="3174004094">Gaura</option>
+                                            <option value="3174004109">Gaura Khurd</option>
+                                            <option value="3174004083">GAYGHAT</option>
+                                            <option value="3174004030">GHORHAT</option>
+                                            <option value="3174004029">GITHANI</option>
+                                            <option value="3174004031">GONAURA</option>
+                                            <option value="3174004032">GORAYA GHAT</option>
+                                            <option value="3174004034">HARDI</option>
+                                            <option value="3174004033">HARPUR</option>
+                                            <option value="3174004106">Hatwa</option>
+                                            <option value="3174004110">Itaua</option>
+                                            <option value="3174004036">JAI RAM PATTI</option>
+                                            <option value="3174004037">JAMIRA</option>
+                                            <option value="3174004039">JHIGURAPAR</option>
+                                            <option value="3174004040">JOGARAJA</option>
+                                            <option value="3174004048">KADSARA</option>
+                                            <option value="3174004102">Kalan</option>
+                                            <option value="3174004046">KALEND HARDO</option>
+                                            <option value="3174004092">Kali Jagdispur</option>
+                                            <option value="3174004047">KANSAR</option>
+                                            <option value="3174004045">KATHAICHA</option>
+                                            <option value="3174004049">KEVTALI</option>
+                                            <option value="3174004050">KHARVANIYA KHURD</option>
+                                            <option value="3174004051">KHIRIYA</option>
+                                            <option value="3174004099">Kodari</option>
+                                            <option value="3174004053">KODRA BHUALPATTI</option>
+                                            <option value="3174004054">KODWAT</option>
+                                            <option value="3174004056">KOLAHUGADA</option>
+                                            <option value="3174004096">Lakhanapar</option>
+                                            <option value="3174004059">LAKHANOHAR</option>
+                                            <option value="3174004060">LOIYABHAR</option>
+                                            <option value="3174004061">MADHARAJA</option>
+                                            <option value="3174004062">MAHADEVA</option>
+                                            <option value="3174004067">MAHOBARA</option>
+                                            <option value="3174004063">MAHULI</option>
+                                            <option value="3174004064">MAJHAUVA EKDANGAWA</option>
+                                            <option value="3174004065">MANPUR</option>
+                                            <option value="3174004068">MOLANAPUR</option>
+                                            <option value="3174004069">MUKHALISPUR</option>
+                                            <option value="3174004070">MUKUNDPUR</option>
+                                            <option value="3174004027">MURIYARI</option>
+                                            <option value="3174004071">NAGUA
+                                            <option value="3174004073">NATAWA</option>
+                                            <option value="3174004072">NATHNAGAR</option>
+                                            <option value="3174004075">NEEVAHORIK</option>
+                                            <option value="3174004104">Nokta</option>
+                                            <option value="3174004093">Ojha Patti</option>
+                                            <option value="3174004076">ONBILAYI</option>
+                                            <option value="3174004078">PADRAHA</option>
+                                            <option value="3174004079">PARMESHWARPUR</option>
+                                            <option value="3174004080">PARSA URF FIDAIPUR</option>
+                                            <option value="3174004026">PIDARI PURVI</option>
+                                            <option value="3174004081">RATANPUR</option>
+                                            <option value="3174004082">REWATA</option>
+                                            <option value="3174004024">SACRAICHA</option>
+                                            <option value="3174004086">SAKHI</option>
+                                            <option value="3174004113">SANICHARA CHAUBEY</option>
+                                            <option value="3174004066">SARHARA</option>
+                                            <option value="3174004077">SATHARA</option>
+                                            <option value="3174004028">SHANICHARA BABU</option>
+                                            <option value="3174004074">SHANICHARA PURVI</option>
+                                            <option value="3174004098">Shanti Nargapar</option>
+                                            <option value="3174004044">SHIKTAHA</option>
+                                            <option value="3174004035">SISWANIYA</option>
+                                            <option value="3174004052">SUBAKHARI</option>
+                                            <option value="3174004108">Sukhipur</option>
+                                            <option value="3174004101">Sukrauli</option>
+                                            <option value="3174004042">TARAYAPAR</option>
+                                            <option value="3174004043">TIGHARA</option>
+                                            <option value="3174004112">Tikuie Kol Babu</option>
+                                            <option value="3174004095">Tinhari</option>
+                                        </select>
+
+                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                    </div>
+
+                                    <div class="col-12 allVillage" id="Pauli" style="display: none;">
+                                        <label for="yourVillage" class="form-label">Your Village</label>
+
+                                            <select class="form-select" aria-label="Default select example" id="Pauli_village">
+
                                                 <option value="3174008001">ARJAW</option>
                                                 <option value="3174008003">BACHHHAIPUR</option>
                                                 <option value="3174008004">BARGADWA</option>
@@ -224,8 +442,10 @@
 
     function register(){
         var url = "/user/register";
+        var block = $("#yourblock").find('option:selected').text()
+        var blockId = $("#yourblock").find('option:selected').val();
+        var villageName =$("#"+blockId+"_village").find('option:selected').text();
 
-        var villageName =$("#yourVillage").find('option:selected').text()
         var name =  $("#yourName").val();
         var mobile = $("#yourMobile").val();
         var email = $("#yourEmail").val();
@@ -233,6 +453,7 @@
         var password = $("#yourPassword").val();
         var obj ={};
         obj["villageName"]= villageName;
+        obj["block"]= block;
         obj["name"]= name;
         obj["mobile"]= mobile;
         obj["email"]= email;
@@ -243,6 +464,26 @@
             ajax.alert("success", "Your registration is successfull , Please login to access application");
         } else {
             ajax.alert("error", response.error);
+        }
+
+    }
+
+    function showVillage(thisObj){
+        var val = $(thisObj).val();
+        if(val ==""){
+            $("#Nathnagar").hide();
+            $("#Haisarbazar").hide();
+            $("#Pauli").hide();
+
+            $("#Nathnagar").val("");
+            $("#Haisarbazar").val("");
+            $("#Pauli").val("");
+        }else{
+            $("#Nathnagar").hide();
+            $("#Haisarbazar").hide();
+            $("#Pauli").hide();
+
+            $("#"+val).show();
         }
 
     }

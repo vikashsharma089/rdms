@@ -40,6 +40,8 @@ var DVIEW = function(){
 
     this.loadDistribution = function(obj){
         distribute.changeTableHeader(obj);
+        $("#tblHeader").find("th").last().remove();
+        $("#tblHeader").append('<th scope="col">Signature</th>')
         var monthId = $("#monthSelector").val();
         var response = ajax.get("/distribution/view/"+monthId);
         $("#cardTable").empty();
@@ -63,11 +65,11 @@ var DVIEW = function(){
             table = table + '<td>' + obj[i].rationCard.unit + '</td>';
 
             var detais = obj[i].details;
+
             for(var j=0; j<detais.length; j++){
                 table = table + '<td>' + detais[j].quantity + ' Kg.</td>';
-                table = table + '<td>' + detais[j].amount + ' Rs.</td>';
             }
-
+            table = table + '<td>' + obj[i].totalAmount + ' Rs.</td>';
             table = table + '<td></td>';
             table = table + '</tr>';
             counter = counter+1;

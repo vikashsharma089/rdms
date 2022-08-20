@@ -18,6 +18,10 @@ public class PurwaService {
 	private UserService userService;
 
 	public PurwaModel save(PurwaModel model) {
+		if(model.getVillage().getID() ==null){
+			model.setVillage(userService.getVillage());
+			return purwaRepository.save(model);
+		}
 		return purwaRepository.save(model);
 	}
 

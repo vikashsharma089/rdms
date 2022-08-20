@@ -8,6 +8,7 @@ public class RegistrationInput {
     public String email;
     public String userName;
     public String password;
+    public String block;
 
     public String getVillageName() {
         return villageName;
@@ -55,5 +56,13 @@ public class RegistrationInput {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
     }
 }

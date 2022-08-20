@@ -101,6 +101,7 @@ var DISTRIBUTE = function() {
                 table = table + '<td>' + obj[i].fatherOrHusband + '</td>';
                 table = table + '<th>' +unit+ '</th>';
                 var totalkg =0;
+                var totalAmount =0;
                 for(var j =0; j<jsonData.length; j++){
                     var map = new Object(); // or var map = {};
                     if(jsonData[j].quantity !== 0){
@@ -108,17 +109,19 @@ var DISTRIBUTE = function() {
                         var totalQuantity = 0;
 
                             totalQuantity = distribute.getTotalCalculatedKg(config,unit)
-                        totalAmount = distribute.getTotalCalculatedAmount(config,totalQuantity)
+                        totalAmount = totalAmount+ distribute.getTotalCalculatedAmount(config,totalQuantity)
                         table = table + '<td scope="col">'+totalQuantity+'</td>';
-                        table = table + '<td scope="col">'+totalAmount+'</td>';
+
                         map["quantity"] =totalQuantity;
-                        map["amount"] =totalAmount;
+                        map["amount"] =distribute.getTotalCalculatedAmount(config,totalQuantity);
                         map["stockItem"] ={"id":jsonData[j].stockItem.id};
                         items.push(map);
                     }
                 }
 
-                table = table + '<td><button type="button" class="btn btn-primary" onclick="distribute.addTtoDistributed(' + obj[i].id + ',this)" data='+ window.btoa(JSON.stringify(items))+' style="width:100%;">Add</button></td>';
+                table = table + '<td scope="col">'+totalAmount+'</td>';
+
+                table = table + '<td><button type="button" class="btn btn-primary" onclick="distribute.addTtoDistributed(' + obj[i].id + ',this,'+totalAmount+')" data='+ window.btoa(JSON.stringify(items))+' style="width:100%;">Add</button></td>';
                 table = table + '</tr>';
             }
             $("#cardTable").append(table);
@@ -146,7 +149,7 @@ var DISTRIBUTE = function() {
 
     }
 
-    this.addTtoDistributed = function(rationId,obj) {
+    this.addTtoDistributed = function(rationId,obj, totalAmount) {
         var map  = $(obj).attr("data");
         var quantityObj = JSON.parse(window.atob(map));
         var monthId = $("#monthSelector").val();
@@ -157,6 +160,8 @@ var DISTRIBUTE = function() {
             jsonObj["details"]=quantityObj;
             jsonObj["stock"] = {"id":monthId};
             jsonObj["rationCard"] = {"id":rationId}
+            jsonObj["totalAmount"] = totalAmount;
+
 
             var response = ajax.post("/distribution/add", jsonObj);
             if (response.status == "success") {

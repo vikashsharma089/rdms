@@ -17,7 +17,13 @@ public class StockItemService {
 	private UserService userService;
 	
 	public StockItem save(StockItem model) {
-		return stockItemRepository.save(model);
+		if(model.getVillage() ==null || model.getVillage().getID() == null){
+			model.setVillage(userService.getVillage());
+			return stockItemRepository.save(model);
+		}else {
+			return stockItemRepository.save(model);
+		}
+
 	}
 	
 	public List<StockItem> findAllByVillage() {

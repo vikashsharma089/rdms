@@ -1,11 +1,7 @@
 package com.rdms.controller;
 
-import com.rdms.model.PurwaModel;
-import com.rdms.model.Users;
-import com.rdms.model.Village;
-import com.rdms.service.PurwaService;
-import com.rdms.service.UserService;
-import com.rdms.service.VillageService;
+import com.rdms.model.*;
+import com.rdms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +20,15 @@ public class Registration {
     private VillageService villageService;
     @Autowired
     private UserService userService;
+
     @Autowired
     private PurwaService purwaService;
+
+    @Autowired
+    private StockItemService stockItemService;
+
+    @Autowired
+    private RuleService ruleService;
 
 
 
@@ -62,14 +65,14 @@ public class Registration {
         }
         if(!villageService.findByVillageName(registrationInput.villageName).isEmpty()){
             response.put("status", "error");
-            response.put("error","This Village already registered !");
+            response.put("error","This Village already registered ! please contact 9416677347");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         Users usersModel = new Users();
         Village villageModel= new Village();
         PurwaModel purwaModel = new PurwaModel();
-        villageModel.setBlockName("Pauli");
+        villageModel.setBlockName(registrationInput.getBlock());
         villageModel.setVillageName(registrationInput.getVillageName());
         villageModel = villageService.save(villageModel);
 
@@ -90,7 +93,43 @@ public class Registration {
         purwaService.save(purwaModel);
 
 
+        //  making item entry
+        StockItem stockModel = new StockItem();
+        stockModel.setItemName("Wheat");
+        saveStockItem(stockModel,villageModel);
+        StockItem stockModel2 = new StockItem();
+        stockModel2.setItemName("Rice");
+        saveStockItem(stockModel2,villageModel);
+
+
         response.put("status", "success");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public void saveStockItem(StockItem stockModel, Village village){
+
+        stockModel.setVillage(village);
+        stockModel =stockItemService.save(stockModel);
+        Rules ruleModel = new Rules();
+        Rules  ruleModel2 = new Rules();
+
+        ruleModel.setPerUnitOrCard("unit");
+        ruleModel.setKgPerUnitOrCard(2);
+        ruleModel.setRate(0.0);
+        ruleModel.setRationCardType("PHH");
+        ruleModel.setVillage(stockModel.getVillage());
+        ruleModel.setStockItem(stockModel);
+        ruleModel.setVillage(village);
+        ruleService.save(ruleModel);
+
+        ruleModel2.setPerUnitOrCard("unit");
+        ruleModel2.setKgPerUnitOrCard(2);
+        ruleModel2.setRationCardType("AAY");
+        ruleModel2.setRate(0.0);
+        ruleModel2.setVillage(stockModel.getVillage());
+        ruleModel2.setStockItem(stockModel);
+        ruleModel2.setVillage(village);
+        ruleService.save(ruleModel2);
+
     }
 }
