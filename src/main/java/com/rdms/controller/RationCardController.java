@@ -69,14 +69,14 @@ public class RationCardController {
 			model.setVillage(userService.getVillage());
 
 
-			String cardNumber =  currentRow.getCell(1).getStringCellValue();
+			String cardNumber =  currentRow.getCell(1).getStringCellValue().trim();
 
 		  if(!availableRationCard.contains(cardNumber)) {
-			  String holderName = currentRow.getCell(2).getStringCellValue();
-			  String fatherOrHusband = currentRow.getCell(3).getStringCellValue();
-			  String motherName = currentRow.getCell(4).getStringCellValue();
-			  Integer  unit = Integer.valueOf(currentRow.getCell(5).getStringCellValue());
-			  String cardType = currentRow.getCell(7).getStringCellValue();
+			  String holderName = currentRow.getCell(2).getStringCellValue().trim();
+			  String fatherOrHusband = currentRow.getCell(3).getStringCellValue().trim();
+			  String motherName = currentRow.getCell(4).getStringCellValue().trim();
+			  Integer  unit = Integer.valueOf(currentRow.getCell(5).getStringCellValue().trim());
+			  String cardType = currentRow.getCell(7).getStringCellValue().trim();
 			  //Integer purwaId = (int)(currentRow.getCell(8) == null ? 0 : currentRow.getCell(8).getNumericCellValue() );
 
 			  model.setPurwa(purwaService.findAllByVillage().get(0));
