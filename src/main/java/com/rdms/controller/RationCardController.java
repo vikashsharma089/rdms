@@ -69,13 +69,13 @@ public class RationCardController {
 			model.setVillage(userService.getVillage());
 
 
-		  Long cardNumberAsLong = ((long) currentRow.getCell(1).getNumericCellValue());
-		  String cardNumber = String.valueOf(cardNumberAsLong);
+			String cardNumber =  currentRow.getCell(1).getStringCellValue();
+
 		  if(!availableRationCard.contains(cardNumber)) {
 			  String holderName = currentRow.getCell(2).getStringCellValue();
 			  String fatherOrHusband = currentRow.getCell(3).getStringCellValue();
 			  String motherName = currentRow.getCell(4).getStringCellValue();
-			  Integer  unit = (int) currentRow.getCell(5).getNumericCellValue();
+			  Integer  unit = Integer.valueOf(currentRow.getCell(5).getStringCellValue());
 			  String cardType = currentRow.getCell(7).getStringCellValue();
 			  //Integer purwaId = (int)(currentRow.getCell(8) == null ? 0 : currentRow.getCell(8).getNumericCellValue() );
 
