@@ -4,6 +4,7 @@ import com.rdms.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.security.SecureRandom;
 
@@ -21,7 +25,9 @@ import java.security.SecureRandom;
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
 
-
+    private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
+            new AntPathRequestMatcher("/mobile/**")
+    );
     @Autowired
     private MyUserDetailsService userDetailsService;
 
@@ -51,6 +57,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/registraion").permitAll()
                 .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/authenticate").permitAll()
                 .antMatchers("/home/**").hasAuthority("ROLE_ADMIN").anyRequest()
                 .authenticated().and().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
@@ -64,8 +71,18 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/access-denied")
                 .and().headers().defaultsDisabled().contentTypeOptions();
 
+        http.addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class);
+
+
     }
 
+    @Bean
+    AuthenticationFilter authenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(PROTECTED_URLS);
+        filter.setAuthenticationManager(authenticationManager());
+        //filter.setAuthenticationSuccessHandler(successHandler());
+        return filter;
+    }
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/resources/**", "/resources/***","/forgot-password","/reset-password");
@@ -79,6 +96,12 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(customPasswordEncoder);
 
         return authProvider;
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
 
