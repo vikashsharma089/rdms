@@ -33,9 +33,13 @@ public class MobileAuthentication {
     public ResponseEntity<Map< String, Object >> saveRationCard(@RequestBody RegistrationInput registrationInput) {
         Map< String, Object >  response = new HashMap<>();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registrationInput.getUserName(), registrationInput.getPassword()));
-        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()){
-            Users users = userService.findUserByUserName(registrationInput.getUserName());
+        Users users = userService.findUserByUserName(registrationInput.getUserName());
+        if(users != null){
+
             response.put("token",users.getPassword());
+            response.put("name", users.getName());
+            response.put("village", users.getVillage().getVillageName()+"_"+users.getVillage().getBlockName());
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
