@@ -43,6 +43,13 @@ public class MobileStockController {
         return new ResponseEntity<>(listObj, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/loadPendingStock", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Map<String, Object>> loadPendingStock() {
+        Map<String, Object> response = new HashMap();
+        response.put("data", stockService.loadAllPendingMonth());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/loadRules", method = RequestMethod.GET,  produces="application/json")
     public ResponseEntity<Map<String,Object>> loadRules( ){
         Map<String, Object> response = new HashMap();
