@@ -29,7 +29,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        Optional tokenParam = Optional.ofNullable(request.getHeader(AUTHORIZATION)); //Authorization: Bearer TOKEN
+        Optional tokenParam = Optional.ofNullable(request.getHeader("password")); //Authorization: Bearer TOKEN
         Optional pss = Optional.ofNullable(request.getHeader("userName")); //Authorization: Bearer TOKEN
         if(tokenParam.isEmpty() || pss.isEmpty()  ){
             return null;
