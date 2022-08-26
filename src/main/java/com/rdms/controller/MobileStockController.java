@@ -1,11 +1,9 @@
 package com.rdms.controller;
 
 
-import com.rdms.model.RationCardModel;
-import com.rdms.model.Rules;
-import com.rdms.model.StockDetails;
-import com.rdms.model.StockModel;
+import com.rdms.model.*;
 import com.rdms.service.RationCardService;
+import com.rdms.service.RationDistributionService;
 import com.rdms.service.RuleService;
 import com.rdms.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,9 @@ public class MobileStockController {
     private StockService stockService;
     @Autowired
     private RuleService ruleService;
+
+    @Autowired
+    private RationDistributionService rationDistributionService;
 
     @Autowired
     private RationCardService rationCardService;
@@ -102,6 +103,45 @@ public class MobileStockController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+
+    @RequestMapping(value = "/addDistribute", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Map<String, Object>> searchRationCard(@RequestBody MobileRationDistributeInput mobleRationSearchInput) {
+        Map<String, Object> response = new HashMap<>();
+       try {
+           Integer rationCardId = Integer.valueOf(mobleRationSearchInput.getCardid());
+           Integer StockId = Integer.valueOf(mobleRationSearchInput.getStockid());
+           Double totalAmount = Double.valueOf(mobleRationSearchInput.getTotal_amount());
+           RationDistribution rationCard = new RationDistribution();
+           rationCard.setID(rationCardId);
+           rationCard.setTotalAmount(totalAmount);
+           rationCard.setStock(new StockModel(StockId));
+
+           Set<DistributionDetails> details = new HashSet<>();
+           for (MobilestockItems items : mobleRationSearchInput.getItems()) {
+               Integer id = Integer.valueOf(items.getId());
+               Double quantity = Double.valueOf(items.getQuantity());
+               Double amount = Double.valueOf(items.getAmount());
+               DistributionDetails itemModel = new DistributionDetails();
+               itemModel.setID(id);
+               itemModel.setQuantity(quantity);
+               itemModel.setAmount(amount);
+               details.add(itemModel);
+
+           }
+           rationCard.setDetails(details);
+           rationDistributionService.Distribute(rationCard,response);
+           response.put("status","success");
+           return new ResponseEntity < > (response, HttpStatus.OK);
+       }catch (Exception e){
+           response.put("error", e.getMessage());
+           response.put("status", "error");
+           return new ResponseEntity < > (response, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+
+    }
+
 
     public Integer getCalculatedQuantity(Object config, Integer unit) {
         Rules rules = (Rules)config;

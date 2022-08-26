@@ -25,8 +25,8 @@ public class MyUserDetailsService implements UserDetailsService {
         Users users = userService.findUserByUserName(userName);
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-       // return new Users("admin", "admin",  Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-        return buildUserForAuthentication(users, authorities);
+         return new org.springframework.security.core.userdetails.User(users.getUserName(), users.getPassword(),  Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        //return buildUserForAuthentication(users, authorities);
     }
 
     private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {

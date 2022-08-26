@@ -33,14 +33,6 @@ public class DistributionController {
     @Autowired
     private RationDistributionService rationDistributionService;
     
-    @Autowired
-    private DistributionDetailService distributionDetailService;
-
-    @Autowired
-    private StockService stockService;
-
-    @Autowired
-    private StockDetailService stockDetailService;
 
     @Autowired
     private UserService userService;
@@ -49,46 +41,10 @@ public class DistributionController {
         "application/json"
     })
     public ResponseEntity < Map < String, Object >> saveRationCard(@RequestBody RationDistribution distributionModel) throws IOException {
+        Map< String, Object > response = new HashMap<>();
+        try{
 
-
-        Map < String, Object > response = new HashMap();
-        try {
-
-            if (rationDistributionService.findByStockAndRationCardId(distributionModel.getStock().getID(), distributionModel.getRationCard().getID()).isEmpty()) {
-
-                Map < Integer, Double > quantityMap = new HashMap();
-                distributionModel.setDistributedOn(Instant.now());
-                distributionModel.setVillage(userService.getVillage());
-                RationDistribution rationDistributionModel = rationDistributionService.save(distributionModel);
-               
-                for (DistributionDetails distributionDetails: rationDistributionModel.getDetails()) {
-                    quantityMap.put(distributionDetails.getStockItem().getID(), distributionDetails.getQuantity());
-                    distributionDetails.setDistribution(rationDistributionModel);
-                    
-                }
-                distributionDetailService.saveAll(rationDistributionModel.getDetails());
-               
-                // to update stock after distribution 
-                Optional < StockModel > stockModel = stockService.findMonthById(distributionModel.getStock().getID());
-                if (!stockModel.isEmpty()) {
-                    StockModel model = stockModel.get();
-                    Set < StockDetails > stockItems = model.getItems();
-                    for (StockDetails stockDetails: stockItems) {
-                        Double distributedQuantity = quantityMap.get(stockDetails.getStockItem().getID());
-                       if(distributedQuantity != null) {
-                    	   Double remainsStock = (stockDetails.getQuantity() - distributedQuantity);
-                           stockDetails.setQuantity(remainsStock);   
-                       }
-                    }
-                    stockDetailService.save(stockItems);
-                }
-
-                response.put("status", "success");
-            } else {
-                response.put("status", "error");
-                response.put("error", "This card has been already added.");
-            }
-
+            rationDistributionService.Distribute(distributionModel,response);
             return new ResponseEntity < > (response, HttpStatus.OK);
         } catch (Exception e) {
             response.put("error", e.getMessage());
