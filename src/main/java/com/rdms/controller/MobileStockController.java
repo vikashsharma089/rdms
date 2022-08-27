@@ -62,9 +62,10 @@ public class MobileStockController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<List<Map<String, Object>>> searchRationCard(@RequestBody MobleRationSearchInput mobleRationSearchInput) {
+    public ResponseEntity<Map<String, Object>> searchRationCard(@RequestBody MobleRationSearchInput mobleRationSearchInput) {
 
         Map<String, Object> rules = new HashMap();
+        Map<String, Object> finalresonse2 = new HashMap();
         Integer stockeId = Integer.valueOf(mobleRationSearchInput.getStockId());
         String SearchKey = mobleRationSearchInput.getCardNumber();
         List<Map<String, Object>> itemList = new ArrayList<>();
@@ -107,7 +108,8 @@ public class MobileStockController {
             finalresponse.add(response);
         }
 
-        return new ResponseEntity<>(finalresponse, HttpStatus.OK);
+        finalresonse2.put("results",finalresponse);
+        return new ResponseEntity<>(finalresonse2, HttpStatus.OK);
     }
 
 
