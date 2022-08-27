@@ -39,7 +39,14 @@ public class StockItem {
     @Fetch(FetchMode.SELECT)
     @JoinColumn(name = "village", referencedColumnName = "ID")
     private Village village;
-	
+
+	public StockItem() {
+
+	}
+
+	public StockItem(Integer ID) {
+		this.ID = ID;
+	}
 
 	public Integer getID() {
 		return ID;
@@ -64,5 +71,6 @@ public class StockItem {
 	public void setVillage(Village village) {
 		this.village = village;
 	}
+
 	
 }

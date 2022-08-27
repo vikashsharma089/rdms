@@ -114,17 +114,21 @@ public class MobileStockController {
            Integer StockId = Integer.valueOf(mobleRationSearchInput.getStockid());
            Double totalAmount = Double.valueOf(mobleRationSearchInput.getTotal_amount());
            RationDistribution rationCard = new RationDistribution();
-           rationCard.setID(rationCardId);
+           RationCardModel ration = new  RationCardModel(rationCardId);
+
+           rationCard.setRationCard(ration);
            rationCard.setTotalAmount(totalAmount);
            rationCard.setStock(new StockModel(StockId));
 
            Set<DistributionDetails> details = new HashSet<>();
+
            for (MobilestockItems items : mobleRationSearchInput.getItems()) {
                Integer id = Integer.valueOf(items.getId());
                Double quantity = Double.valueOf(items.getQuantity());
                Double amount = Double.valueOf(items.getAmount());
                DistributionDetails itemModel = new DistributionDetails();
-               itemModel.setID(id);
+
+               itemModel.setStockItem(new StockItem(id));
                itemModel.setQuantity(quantity);
                itemModel.setAmount(amount);
                details.add(itemModel);
@@ -132,7 +136,7 @@ public class MobileStockController {
            }
            rationCard.setDetails(details);
            rationDistributionService.Distribute(rationCard,response);
-           response.put("status","success");
+         //  response.put("status","success");
            return new ResponseEntity < > (response, HttpStatus.OK);
        }catch (Exception e){
            response.put("error", e.getMessage());

@@ -33,7 +33,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         villageDetails.put("userDetail", usermodel);
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                authentication.getPrincipal(), authentication.getCredentials(), authorities);
+                authentication.getPrincipal(), authentication.getCredentials());
         usernamePasswordAuthenticationToken.setDetails(villageDetails);
 
 
