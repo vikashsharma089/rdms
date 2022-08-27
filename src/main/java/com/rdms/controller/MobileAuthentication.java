@@ -39,7 +39,7 @@ public class MobileAuthentication {
             response.put("token",users.getPassword());
             response.put("name", users.getName());
             response.put("village", users.getVillage().getVillageName());
-            response.put("village",users.getVillage().getBlockName());
+            response.put("block",users.getVillage().getBlockName());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }else{
