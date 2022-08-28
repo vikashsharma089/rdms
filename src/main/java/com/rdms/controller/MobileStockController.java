@@ -72,7 +72,7 @@ public class MobileStockController {
         Map<String, Object> finalresonse2 = new HashMap();
         Integer stockeId = Integer.valueOf(mobleRationSearchInput.getStockId());
         String SearchKey = mobleRationSearchInput.getCardNumber();
-        List<Map<String, Object>> itemList = new ArrayList<>();
+
         List<Map<String, Object>> finalresponse = new ArrayList<>();
         List<Rules> rulesList = ruleService.findByVillageId();
         for (Rules ruleModel : rulesList) {
@@ -81,6 +81,7 @@ public class MobileStockController {
 
         List<RationCardModel> rationcardList = rationCardService.searchRationCard(SearchKey);
         for (RationCardModel rationcardModel : rationcardList) {
+            List<Map<String, Object>> itemList = new ArrayList<>();
 
             Map<String, Object> response = new HashMap();
             response.put("data", rationcardModel);
