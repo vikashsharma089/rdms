@@ -2,6 +2,8 @@ package com.rdms.config;
 
 import antlr.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,7 +34,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
         Optional tokenParam = Optional.ofNullable(request.getHeader("password")); //Authorization: Bearer TOKEN
         Optional pss = Optional.ofNullable(request.getHeader("userName")); //Authorization: Bearer TOKEN
         if(tokenParam.isEmpty() || pss.isEmpty()  ){
-            return null;
+            throw new AccessDeniedException("Incorrect user credentials !!");
         }
         String userName = request.getHeader("userName");
         String token = request.getHeader("password");

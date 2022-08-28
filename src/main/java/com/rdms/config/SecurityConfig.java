@@ -41,7 +41,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(customPasswordEncoder);
+                       // .passwordEncoder(bCryptPasswordEncoder());
+               .passwordEncoder(customPasswordEncoder);
         auth.authenticationProvider(customAuthenticationProvider);
     }
 
@@ -105,10 +106,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
 
-   /* @Bean
+    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A, -1, SecureRandom.getInstance());
+        return new BCryptPasswordEncoder();
 
-    }*/
+    }
 
 }

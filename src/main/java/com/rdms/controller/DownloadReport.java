@@ -5,9 +5,7 @@ import com.rdms.model.RationDistribution;
 import com.rdms.service.DistributionDetailService;
 import com.rdms.service.RationDistributionService;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -19,9 +17,7 @@ import org.springframework.core.io.Resource;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,9 +40,9 @@ public class DownloadReport {
     public ResponseEntity<Resource> exportToExcel(@PathVariable("stockId") String stockIds ) throws IOException {
 
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
+         workbook = new XSSFWorkbook();
 
         sheet = workbook.createSheet("Users");
 
@@ -94,8 +90,8 @@ public class DownloadReport {
         style2.setAlignment(HorizontalAlignment.CENTER);
 
         stylePink.setFillBackgroundColor(IndexedColors.PINK.getIndex());
+       int sn=1;
 
-          int sn=0;
         for (RationDistribution rationDistribution : rationDistributions) {
             CellStyle commonStyle =style2;
             Row row2 = sheet.createRow(rowCount++);
@@ -114,6 +110,9 @@ public class DownloadReport {
                 createCell(row2, columnCount++, new StringBuffer().append(model.getQuantity()).append(" Kg.").toString(), commonStyle);
             }
             createCell(row2, columnCount++, new StringBuffer().append(rationDistribution.getTotalAmount()).append(" Rs.").toString(), commonStyle);
+
+            // to inset image
+            createCell(row2, columnCount++, rationDistribution.getSignature(), commonStyle);
 
             sn =sn+1;
         }
@@ -137,9 +136,26 @@ public class DownloadReport {
         cell.setCellValue((Integer) value);
         } else if (value instanceof Boolean) {
         cell.setCellValue((Boolean) value);
-        }else {
+        } else if(value instanceof  byte []){
+            if(value != null){
+                int pictureID = workbook.addPicture((byte [])value, Workbook.PICTURE_TYPE_PNG);
+                XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();
+                XSSFClientAnchor signature = new XSSFClientAnchor();
+                int col2 = columnCount;
+                col2 = col2 +1;
+                int row2 = row.getRowNum();
+                row2 = row2+1;
+                signature.setCol1(columnCount);
+                signature.setCol2(col2);
+                signature.setRow1(row.getRowNum());
+                signature.setRow2(row2);
+                drawing.createPicture(signature,pictureID);
+            }
+
+    }else {
         cell.setCellValue((String) value);
         }
+
         cell.setCellStyle(style);
     }
 

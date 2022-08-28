@@ -1,6 +1,7 @@
 package com.rdms.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rdms.model.*;
 import com.rdms.service.RationCardService;
 import com.rdms.service.RationDistributionService;
@@ -8,11 +9,14 @@ import com.rdms.service.RuleService;
 import com.rdms.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -69,14 +73,14 @@ public class MobileStockController {
         Integer stockeId = Integer.valueOf(mobleRationSearchInput.getStockId());
         String SearchKey = mobleRationSearchInput.getCardNumber();
         List<Map<String, Object>> itemList = new ArrayList<>();
-       List<Map<String, Object> > finalresponse = new ArrayList<>();
+        List<Map<String, Object>> finalresponse = new ArrayList<>();
         List<Rules> rulesList = ruleService.findByVillageId();
         for (Rules ruleModel : rulesList) {
             rules.put(ruleModel.getRationCardType() + "_" + ruleModel.getStockItem().getItemName(), ruleModel);
         }
 
         List<RationCardModel> rationcardList = rationCardService.searchRationCard(SearchKey);
-        for(RationCardModel rationcardModel : rationcardList) {
+        for (RationCardModel rationcardModel : rationcardList) {
 
             Map<String, Object> response = new HashMap();
             response.put("data", rationcardModel);
@@ -108,70 +112,97 @@ public class MobileStockController {
             finalresponse.add(response);
         }
 
-        finalresonse2.put("results",finalresponse);
+        finalresonse2.put("results", finalresponse);
         return new ResponseEntity<>(finalresonse2, HttpStatus.OK);
     }
-
 
 
     @RequestMapping(value = "/addDistribute", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Map<String, Object>> searchRationCard(@RequestBody MobileRationDistributeInput mobleRationSearchInput) {
         Map<String, Object> response = new HashMap<>();
-       try {
-           Integer rationCardId = Integer.valueOf(mobleRationSearchInput.getCardid());
-           Integer StockId = Integer.valueOf(mobleRationSearchInput.getStockid());
-           Double totalAmount = Double.valueOf(mobleRationSearchInput.getTotal_amount());
-           RationDistribution rationCard = new RationDistribution();
-           RationCardModel ration = new  RationCardModel(rationCardId);
-
-           rationCard.setRationCard(ration);
-           rationCard.setTotalAmount(totalAmount);
-           rationCard.setStock(new StockModel(StockId));
-
-           Set<DistributionDetails> details = new HashSet<>();
-
-           for (MobilestockItems items : mobleRationSearchInput.getItems()) {
-               Integer id = Integer.valueOf(items.getId());
-               Double quantity = Double.valueOf(items.getQuantity());
-               Double amount = Double.valueOf(items.getAmount());
-               DistributionDetails itemModel = new DistributionDetails();
-
-               itemModel.setStockItem(new StockItem(id));
-               itemModel.setQuantity(quantity);
-               itemModel.setAmount(amount);
-               details.add(itemModel);
-
-           }
-           rationCard.setDetails(details);
-           rationDistributionService.Distribute(rationCard,response);
-         //  response.put("status","success");
-           return new ResponseEntity < > (response, HttpStatus.OK);
-       }catch (Exception e){
-           response.put("error", e.getMessage());
-           response.put("status", "error");
-           return new ResponseEntity < > (response, HttpStatus.INTERNAL_SERVER_ERROR);
-       }
+        try {
+            RationDistribution rationCard = prepareData(mobleRationSearchInput, null);
+            rationDistributionService.Distribute(rationCard, response);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("status", "error");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
 
+    @RequestMapping(value = "/distributeByImage" , method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE  })
+    public ResponseEntity<Map<String,Object>> submitInspection(@RequestParam String inputJsonString, @RequestParam(value="file") MultipartFile file) throws IOException {
+
+        Map<String,Object> response = new HashMap ();
+        try {
+            ObjectMapper mapper  = new ObjectMapper();
+            Map<String, MultipartFile> imageData = new HashMap();
+            MobileRationDistributeInput inputJson = mapper.readValue(inputJsonString, MobileRationDistributeInput.class);
+            RationDistribution rationCard = prepareData(inputJson, file);
+            rationDistributionService.Distribute(rationCard, response);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            response.put("status", "error");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public RationDistribution prepareData(MobileRationDistributeInput mobleRationSearchInput, MultipartFile file) throws IOException {
+        Integer rationCardId = Integer.valueOf(mobleRationSearchInput.getCardid());
+        Integer StockId = Integer.valueOf(mobleRationSearchInput.getStockid());
+        Double totalAmount = Double.valueOf(mobleRationSearchInput.getTotal_amount());
+        RationDistribution rationCard = new RationDistribution();
+        RationCardModel ration = new RationCardModel(rationCardId);
+
+        rationCard.setRationCard(ration);
+        rationCard.setTotalAmount(totalAmount);
+        rationCard.setStock(new StockModel(StockId));
+
+        Set<DistributionDetails> details = new HashSet<>();
+
+        for (MobilestockItems items : mobleRationSearchInput.getItems()) {
+            Integer id = Integer.valueOf(items.getId());
+            Double quantity = Double.valueOf(items.getQuantity());
+            Double amount = Double.valueOf(items.getAmount());
+            DistributionDetails itemModel = new DistributionDetails();
+
+            itemModel.setStockItem(new StockItem(id));
+            itemModel.setQuantity(quantity);
+            itemModel.setAmount(amount);
+            details.add(itemModel);
+
+        }
+        rationCard.setDetails(details);
+        if(file != null){
+            rationCard.setSignature(file.getBytes());
+        }
+        return rationCard;
+    }
+
+
     public Integer getCalculatedQuantity(Object config, Integer unit) {
-        Rules rules = (Rules)config;
+        Rules rules = (Rules) config;
         Integer totalKg = 0;
-         if(rules.getPerUnitOrCard().equalsIgnoreCase("unit")){
-             totalKg = unit* rules.getKgPerUnitOrCard();
-         }
-        if(rules.getPerUnitOrCard().equalsIgnoreCase("card")){
-            totalKg = 1* rules.getKgPerUnitOrCard();
+        if (rules.getPerUnitOrCard().equalsIgnoreCase("unit")) {
+            totalKg = unit * rules.getKgPerUnitOrCard();
+        }
+        if (rules.getPerUnitOrCard().equalsIgnoreCase("card")) {
+            totalKg = 1 * rules.getKgPerUnitOrCard();
         }
         return totalKg;
     }
 
     public Double getCalculatedAmount(Object config, Integer quantity) {
-        Rules rules = (Rules)config;
+        Rules rules = (Rules) config;
         double amount = 0;
-        amount = quantity*rules.getRate();
+        amount = quantity * rules.getRate();
         return amount;
     }
+
 
 }

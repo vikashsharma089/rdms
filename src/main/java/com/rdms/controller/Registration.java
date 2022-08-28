@@ -1,10 +1,12 @@
 package com.rdms.controller;
 
+import com.rdms.config.CustomPasswordEncoder;
 import com.rdms.model.*;
 import com.rdms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,6 +32,8 @@ public class Registration {
     @Autowired
     private RuleService ruleService;
 
+    @Autowired
+    private CustomPasswordEncoder customPasswordEncoder;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {
@@ -81,8 +85,8 @@ public class Registration {
         usersModel.setRegistratoinDate(new Date());
         usersModel.setUserName(registrationInput.getUserName());
         usersModel.setUserNameLower(registrationInput.getUserName().toLowerCase());
-        //usersModel.setPassword(new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A).encode(registrationInput.getPassword().trim()));
-        usersModel.setPassword(registrationInput.getPassword().trim());
+       // usersModel.setPassword(bCryptPasswordEncoder.encode(registrationInput.getPassword()));
+        usersModel.setPassword(customPasswordEncoder.encode(registrationInput.getPassword()));
         usersModel.setEmail(registrationInput.getEmail());
         usersModel.setName(registrationInput.getName());
         usersModel.setVillage(villageModel);

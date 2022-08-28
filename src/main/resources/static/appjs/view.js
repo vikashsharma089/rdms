@@ -70,7 +70,14 @@ var DVIEW = function(){
                 table = table + '<td>' + detais[j].quantity + ' Kg.</td>';
             }
             table = table + '<td>' + obj[i].totalAmount + ' Rs.</td>';
-            table = table + '<td></td>';
+            if(obj[i].signature !== null && obj[i].signature !== "null" ){
+                const base64Image = $.base64('encode',obj[i].signature) ;
+                table = table + '<td><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" /></td>'
+            }else{
+                table = table + '<td></td>';
+            }
+
+
             table = table + '</tr>';
             counter = counter+1;
         }
