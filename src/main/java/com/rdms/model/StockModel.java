@@ -1,5 +1,6 @@
 package com.rdms.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "stock")
-public class StockModel {
+public class StockModel implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

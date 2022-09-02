@@ -1,5 +1,6 @@
 package com.rdms.model;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "distribution")
-public class RationDistribution {
+public class RationDistribution implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,21 +21,18 @@ public class RationDistribution {
     private Integer ID;
 	
 	
-	@OneToOne()
-    @Fetch(FetchMode.SELECT)
+	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "stock_id", referencedColumnName = "ID")
     private StockModel stock;
 
-	@OneToOne()
-    @Fetch(FetchMode.SELECT)
+	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ration_card", referencedColumnName = "ID")
     private RationCardModel rationCard;
-	
+
 	@Column(name = "distribution_date")
     private Instant distributedOn;
-	
-	@OneToOne()
-    @Fetch(FetchMode.SELECT)
+
+	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "village_id", referencedColumnName = "ID")
     private Village village;
 
@@ -46,7 +44,7 @@ public class RationDistribution {
 	private byte[] signature;
 
 
-	 @OneToMany(mappedBy="distribution")
+	 @OneToMany(mappedBy="distribution",fetch = FetchType.EAGER)
 	 @OrderBy("stock_item")
 	 private Set<DistributionDetails> details;
 	 

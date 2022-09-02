@@ -2,10 +2,7 @@ package com.rdms.controller;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.rdms.service.*;
@@ -59,7 +56,15 @@ public class DistributionController {
     public ResponseEntity < Map < String, Object >> searchRationCard(@PathVariable("monthId") String monthIds) {
         Integer monthId = Integer.valueOf(monthIds);
         Map < String, Object > response = new HashMap();
-        response.put("data", rationDistributionService.findByStockId(monthId));
+        List<RationDistribution> list = rationDistributionService.findByStockId(monthId);
+        for(RationDistribution obj : list){
+            obj.setRationCard(obj.getRationCard());
+            obj.setDetails(obj.getDetails());
+            obj.setStock(obj.getStock());
+
+        }
+
+        response.put("data", list);
         return new ResponseEntity < > (response, HttpStatus.OK);
     }
 }
