@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -19,8 +20,8 @@ public class RationDistribution implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer ID;
-	
-	
+
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", referencedColumnName = "ID")
     private StockModel stock;
@@ -32,6 +33,7 @@ public class RationDistribution implements Serializable {
 	@Column(name = "distribution_date")
     private Instant distributedOn;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "village_id", referencedColumnName = "ID")
     private Village village;

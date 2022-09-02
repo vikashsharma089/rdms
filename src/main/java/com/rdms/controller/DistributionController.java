@@ -57,12 +57,6 @@ public class DistributionController {
         Integer monthId = Integer.valueOf(monthIds);
         Map < String, Object > response = new HashMap();
         List<RationDistribution> list = rationDistributionService.findByStockId(monthId);
-        for(RationDistribution obj : list){
-            obj.setRationCard(obj.getRationCard());
-            obj.setDetails(obj.getDetails());
-            obj.setStock(obj.getStock());
-
-        }
 
         response.put("data", list);
         return new ResponseEntity < > (response, HttpStatus.OK);
