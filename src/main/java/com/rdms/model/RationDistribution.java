@@ -21,7 +21,7 @@ public class RationDistribution implements Serializable {
     private Integer ID;
 	
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", referencedColumnName = "ID")
     private StockModel stock;
 
@@ -32,7 +32,7 @@ public class RationDistribution implements Serializable {
 	@Column(name = "distribution_date")
     private Instant distributedOn;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "village_id", referencedColumnName = "ID")
     private Village village;
 
