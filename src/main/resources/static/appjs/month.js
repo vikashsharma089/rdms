@@ -105,9 +105,11 @@ var MONTH = function() {
                 quantityObj = dataMap[key];
 
                 $.each(quantityObj,function(key, val) {
-                    if(key==="quantity"){
+                    if(key==="quantity" && quantityObj.initalQuantiy>0){
                         table = table + '<td scope="row">' +val+ '</td>';
                         return false;
+                    }else if (key==="quantity" && quantityObj.initalQuantiy==0){
+                        table = table + '<td scope="row"></td>';
                     }
 
                 });

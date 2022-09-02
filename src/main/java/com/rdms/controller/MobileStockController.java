@@ -15,15 +15,27 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import javax.persistence.criteria.CriteriaBuilder;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 
 @RestController
 @Validated
 @CrossOrigin("*")
 @RequestMapping("/mobile")
 public class MobileStockController {
+    private static final int IMG_WIDTH = 300;
+    private static final int IMG_HEIGHT = 150;
+
     @Autowired
     private StockService stockService;
     @Autowired
@@ -180,7 +192,18 @@ public class MobileStockController {
         }
         rationCard.setDetails(details);
         if(file != null){
-            rationCard.setSignature(file.getBytes());
+            Long size = file.getSize();
+            System.out.println("File Size "+size);
+
+            BufferedImage bi = ImageIO.read(file.getInputStream());
+            Image image = bi.getScaledInstance(IMG_WIDTH, IMG_HEIGHT, Image.SCALE_SMOOTH);
+            BufferedImage outputImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, BufferedImage.TYPE_INT_RGB);
+            outputImage.getGraphics().drawImage(image, 0, 0, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            ImageIO.write(outputImage, "png", baos);
+            byte[] imageByps = baos.toByteArray();
+            rationCard.setSignature(imageByps);
         }
         return rationCard;
     }
