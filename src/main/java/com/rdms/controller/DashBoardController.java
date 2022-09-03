@@ -38,6 +38,9 @@ public class DashBoardController {
 
 
            Set<StockDetails> stockDetails =  stockModel.getItems();
+            List<Object[]> currency = rationDistributionService.getTotalDistributedAmmount(stockModel.getID());
+
+
             for(StockDetails model :stockDetails ){
                 if(model.getInitalQuantiy() != null && model.getInitalQuantiy() >0){
                     Map<String, Object> itemDetail = new HashMap<>();
@@ -51,6 +54,13 @@ public class DashBoardController {
             }
 
             List<String> distributedCards = rationDistributionService.findDistributedCardByStockAndVillageId(stockModel.getID());
+            if(!currency.isEmpty()){
+                Object amount[] = currency.get(0);
+                response.put("amount",amount[1] == null ? 0:amount[1]);
+            }else{
+                response.put("amount","0");
+            }
+
 
             response.put("card", rationCardService.getAllRemaingRationCardCount(distributedCards));
             response.put("stockName", stockModel.getMonthId().getMonthName()+"-"+stockModel.getDetails());

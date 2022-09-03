@@ -7,6 +7,9 @@ import com.rdms.model.DistributionDetails;
 import com.rdms.model.StockDetails;
 import com.rdms.model.StockModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rdms.model.RationDistribution;
@@ -29,13 +32,31 @@ public class RationDistributionService {
 	private StockDetailService stockDetailService;
 
 
+	public List<Object[]> getTotalDistributedAmmount(Integer stockId){
+		return rationDistributionRepository.getTotalDistributedAmmount(stockId, userService.getVillage().getID());
+	}
+
+	public List<Object[]> countDistributedRation(Integer stockId){
+		return rationDistributionRepository.countDistributedRation(stockId, userService.getVillage().getID());
+	}
+
+
+
+
+
 	public RationDistribution save(RationDistribution model) {
 		return rationDistributionRepository.save(model);
 	}
-	
+
 	public List<RationDistribution> findByStockId(Integer stockId) {
 		Integer villageId = userService.getVillage().getID();
 		return rationDistributionRepository.findByStockId(stockId,villageId);
+	}
+
+	public Page<RationDistribution> findByStockIdPagination(Integer stockId, int page, int size) {
+		PageRequest pageble  = PageRequest.of(page, size);
+		Integer villageId = userService.getVillage().getID();
+		return rationDistributionRepository.findByStockIdPagination(stockId,villageId, pageble);
 	}
 	
 	public List<RationDistribution> findByStockAndRationCardId(Integer stockId,Integer rationCardId) {

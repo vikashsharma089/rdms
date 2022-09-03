@@ -10,7 +10,7 @@ var DVIEW = function(){
         content = content + '<div class="card-body">'
         content = content + '<div class="dataTable-top"><div class="dataTable-dropdown">'
         content = content + '<select class="dataTable-selector" id="monthSelector" onchange="dview.loadDistribution(this)" ><option value="">Select Month</option></select>'
-        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>PHH:  </label><span id="ant" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: #eb7575"><label>AAY:  </label><span id="bpl" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Download</button></div>     </div></div>'
+        content = content + '</div> <div class="card-body row" style="width:83%;"><div class="col-sm-4"><label>Total:  </label><span id="total" style="font-weight: 600;padding: 8px;">0</span></div>    <div class="col-sm-3"><label>PHH:  </label><span id="PHH" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: #eb7575"><label>AAY:  </label><span id="AAY" style="font-weight: 600;padding: 8px;">0</span></div>  <div class="col-sm-3" style="color: green"><label>Amount:  </label><span id="totalAmmount" style="font-weight: 600;padding: 8px;">0</span></div>     <div class="col-sm-2"><button type="button" class="btn btn-primary" onclick="dview.print()" style="width:100%;float:right;">Download</button></div>      </div></div>'
         content = content + '<table class="table datatable" id="basic-table" >'
         content = content + '<thead>'
         content = content + '<tr id="tblHeader">'
@@ -29,7 +29,7 @@ var DVIEW = function(){
 
         content = content + '</tbody>'
         content = content + '</table>'
-
+        content = content + ' <div className = "dataTable-bottom" > <div className = "dataTable-info" id="dataTable-info-id" style="float: left;"> Showing 0  to  0  of 0 entries </div><nav id="data-pagination" class="dataTable-pagination" style="float: right"> </nav></div>'
         content = content + '</div>'
         content = content + '</div>'
         content = content + '</div>'
@@ -39,54 +39,102 @@ var DVIEW = function(){
     }
 
     this.loadDistribution = function(obj){
+        $("#dataTable-info-id").empty();
+        $("#dataTable-info-id").append("Showing 0  to  0  of 0 entries");
         distribute.changeTableHeader(obj);
         $("#tblHeader").find("th").last().remove();
         $("#tblHeader").append('<th scope="col">Signature</th>')
         var monthId = $("#monthSelector").val();
-        var response = ajax.get("/distribution/view/"+monthId);
-        $("#cardTable").empty();
-        var obj = response.data;
-        var table = "";
-        var counter =1;
-        var bpl =0;
-        var ant =0;
-        for (var i = 0; i < obj.length; i++) {
-            if (obj[i].rationCard.cartType == "AAY") {
-                table = table + '<tr class="table-danger">';
-                bpl= bpl+1;
-            } else {
-                table = table + '<tr class="table-light">';
-                ant = ant+1;
-            }
-            table = table + '<td scope="row">' + counter + '</td>';
-            table = table + '<td scope="row">' + obj[i].rationCard.cardNumber + '</td>';
-            table = table + '<td>' + obj[i].rationCard.cardHolder + '</td>';
-            table = table + '<td>' + obj[i].rationCard.fatherOrHusband + '</td>';
-            table = table + '<td>' + obj[i].rationCard.unit + '</td>';
-
-            var detais = obj[i].details;
-
-            for(var j=0; j<detais.length; j++){
-                table = table + '<td>' + detais[j].quantity + ' Kg.</td>';
-            }
-            table = table + '<td>' + obj[i].totalAmount + ' Rs.</td>';
-            if(obj[i].signature !== null && obj[i].signature !== "null" ){
-                table = table + '<td><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" /></td>'
+        var countResonse = ajax.get("/distribution/viewCount/"+monthId);
+        var cdata = countResonse.data;
+        var ctotal = 0;
+        for(var i=0; i<cdata.length; i++){
+            $("#"+cdata[i][0]).text(cdata[i][1]);
+            if(i<=1){
+                ctotal = ctotal+ cdata[i][1];
             }else{
-                table = table + '<td></td>';
+                $("#totalAmmount").text(cdata[i][1]);
             }
-
-
-            table = table + '</tr>';
-            counter = counter+1;
         }
-        $("#cardTable").append(table);
-        $("#bpl").text(bpl);
-        $("#ant").text(ant);
-        counter = counter-1
-        $("#total").text(counter);
+        $("#total").text(ctotal)
 
 
+        $('#data-pagination').pagination({
+            dataSource: "/distribution/view/"+monthId,
+            locator: 'data',
+            totalNumberLocator: function(response) {
+                return response.totalElement;
+            },
+            pageSize: 10,
+
+            position: 'bottom',
+            ajax: {
+                beforeSend: function() {
+                    $("#cardTable").empty();
+                    $("#cardTable").append('<tr><td></td> <td></td> <td></td><td><div class="spinner-border" role="status">' +
+                        '                <span class="visually-hidden">Loading...</span>' +
+                        '              </div></td><tr>');
+                }
+            },
+            callback: function(obj, pagination) {
+                var from =pagination.pageNumber;
+
+                if(pagination.pageNumber >1){
+                    from = pagination.pageNumber * pagination.pageSize;
+                    from = (from -pagination.pageSize )+1;
+                }
+
+
+                var to = 0;
+                if(obj.length<pagination.pageSize){
+                    to =  (pagination.pageNumber * pagination.pageSize) - (pagination.pageSize-obj.length);
+                }else{
+                   to =  pagination.pageNumber * pagination.pageSize;
+                }
+
+                var info  = "Showing "+from+" to "+to+" of "+pagination.totalNumber+" entries";
+                $("#dataTable-info-id").empty();
+                $("#dataTable-info-id").append(info);
+
+                $("#cardTable").empty();
+                // template method of yourself
+
+                var table = "";
+                var counter =1;
+                var bpl =0;
+                var ant =0;
+                var table ="";
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].rationCard.cartType == "AAY") {
+                        table = table + '<tr class="table-danger">';
+                        bpl= bpl+1;
+                    } else {
+                        table = table + '<tr class="table-light">';
+                        ant = ant+1;
+                    }
+                    table = table + '<td scope="row">' + from + '</td>';
+                    table = table + '<td scope="row">' + obj[i].rationCard.cardNumber + '</td>';
+                    table = table + '<td>' + obj[i].rationCard.cardHolder + '</td>';
+                    table = table + '<td>' + obj[i].rationCard.fatherOrHusband + '</td>';
+                    table = table + '<td>' + obj[i].rationCard.unit + '</td>';
+
+                    var detais = obj[i].details;
+
+                    for(var j=0; j<detais.length; j++){
+                        table = table + '<td>' + detais[j].quantity + ' Kg.</td>';
+                    }
+                    table = table + '<td>' + obj[i].totalAmount + ' Rs.</td>';
+                    if(obj[i].signature !== null && obj[i].signature !== "null" ){
+                        table = table + '<td><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" /></td>'
+                    }else{
+                        table = table + '<td></td>';
+                    }
+                    table = table + '</tr>';
+                    from = from+1;
+                }
+                $("#cardTable").append(table);
+            }
+        })
     }
 
 
@@ -118,6 +166,8 @@ var DVIEW = function(){
         table = table + '<tbody id="cardTable">';
         table = table + '<tr class="table-light">';
         table = table + '</tr>';
+
+
 
         table = table + '</div>';
         table = table + '</div>';

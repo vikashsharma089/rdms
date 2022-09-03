@@ -205,6 +205,13 @@
 			</ul>
 		</li><!-- End Components Nav -->
 
+		<!--<li class="nav-item" onclick="download();">
+			<a class="nav-link " href="#" >
+				<i class="bi bi-journal-text"></i>
+				<span>Download</span>
+			</a>
+		</li>-->
+
 	</ul>
 
 </aside><!-- End Sidebar-->
@@ -259,6 +266,10 @@
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
+<script src="/js/jquery.sse.js"></script>
+<script src="/js/table-pagination.js"></script>
+
+<script src="/js/jquery.base64.js"></script>
 <script src="/appjs/allCard.js"></script>
 <script src="/appjs/month.js"></script>
 <script src="/appjs/distribute.js"></script>
@@ -266,6 +277,8 @@
 <script src="/appjs/ajax.js"></script>
 <script src="/appjs/setting.js"></script>
 <script src="/appjs/main.js"></script>
+
+
 
 <script>
 	var villageId=1;
@@ -275,6 +288,10 @@
 		loadStockDetail();
 
 	});
+
+	function  download(){
+		var response = ajax.get("/report/download");
+	}
 
 	function functionLoadConfig(){
 
@@ -289,6 +306,7 @@
 		var response = ajax.get("/dashboard/load");
 		var obj = response.data;
 		var stockName = response.stockName;
+		var totalAmount = response.amount;
 		if(stockName == undefined){
 			stockName = "";
 		}
@@ -305,6 +323,30 @@
 
 
 		html = html+' <div class="col-xxl-4 col-xl-12">'
+
+
+
+		/* revenu card */
+		html = html+'<div class="card info-card revenue-card">'
+
+		html = html+'<div class="card-body">'
+		html = html+'<h5 class="card-title">Amount <span>| '+stockName+'</span></h5>'
+
+		html = html+'<div class="d-flex align-items-center">'
+		html = html+'<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">'
+		html = html+'<i class="bi bi-currency-rupee"></i>'
+		html = html+'</div>'
+		html = html+'<div class="ps-3">'
+		html = html+'<h6>&#2352; '+totalAmount+'</h6>'
+		html = html+'<span class="text-success small pt-1 fw-bold">'
+
+		html = html+'</div>'
+		html = html+'</div>'
+		html = html+'</div>'
+
+		html = html+'</div>'
+		/* end of revenu card */
+
 
 		html = html+'<div class="card info-card customers-card">'
 
@@ -372,6 +414,7 @@
 
 
 </script>
+
 </body>
 
 </html>
