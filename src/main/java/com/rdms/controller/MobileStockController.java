@@ -8,6 +8,7 @@ import com.rdms.service.RationDistributionService;
 import com.rdms.service.RuleService;
 import com.rdms.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -208,6 +209,32 @@ public class MobileStockController {
         return rationCard;
     }
 
+    @RequestMapping(value = "/viewCount/{stockId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity < Map < String, Object >> countDistributedRation(@PathVariable("stockId") String stockId) {
+        Integer monthId = Integer.valueOf(stockId);
+        Map < String, Object > response = new HashMap();
+        List<Object[]> finalList = new ArrayList<>();
+        finalList= rationDistributionService.countDistributedRation(monthId);
+        ;
+        response.put("data", finalList);
+        response.put("amount", rationDistributionService.getTotalDistributedAmmount(monthId).get(0));
+        return new ResponseEntity < > (response, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/view/{monthId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity < Map < String, Object >> searchRationCard(@PathVariable("monthId") String monthIds, @RequestParam(value ="pageNumber", defaultValue = "0") int page,
+                                                                     @RequestParam(value ="pageSize", defaultValue = "3") int size) {
+
+        page = page-1;
+        Integer monthId = Integer.valueOf(monthIds);
+        Map < String, Object > response = new HashMap();
+        Page<RationDistribution> requestedPage = rationDistributionService.findByStockIdPagination(monthId,page,size);
+        response.put("totalElement", requestedPage.getTotalElements());
+        response.put("totalPage", requestedPage.getTotalPages());
+        response.put("totalNumber", requestedPage.getNumberOfElements());
+        response.put("currentPage", requestedPage.getNumber());
+        response.put("data", requestedPage.getContent());
+        return new ResponseEntity < > (response, HttpStatus.OK);
+    }
 
     public Integer getCalculatedQuantity(Object config, Integer unit) {
         Rules rules = (Rules) config;
