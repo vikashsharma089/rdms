@@ -1,7 +1,9 @@
 package com.rdms.service;
 
+import java.util.List;
 import java.util.Set;
 
+import com.rdms.model.RationDistribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,10 @@ public class DistributionDetailService {
 	
 	public DistributionDetails save(DistributionDetails model) {
 		return distributionDetailRepository.save(model);
+	}
+
+	public Set<DistributionDetails> findDistributionDetailsByDistribution(RationDistribution rationDistribution){
+		return distributionDetailRepository.findAllByDistribution(rationDistribution);
 	}
 
 }

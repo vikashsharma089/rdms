@@ -29,6 +29,8 @@ public class DistributionController {
 
     @Autowired
     private RationDistributionService rationDistributionService;
+    @Autowired
+    private  DistributionDetailService distributionDetailService;
     
 
     @Autowired
@@ -57,7 +59,6 @@ public class DistributionController {
         Integer monthId = Integer.valueOf(monthIds);
         Map < String, Object > response = new HashMap();
         List<RationDistribution> list = rationDistributionService.findByStockId(monthId);
-
         response.put("data", list);
         return new ResponseEntity < > (response, HttpStatus.OK);
     }

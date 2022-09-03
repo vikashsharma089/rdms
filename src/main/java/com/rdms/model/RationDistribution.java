@@ -46,7 +46,7 @@ public class RationDistribution implements Serializable {
 	private byte[] signature;
 
 
-	 @OneToMany(mappedBy="distribution",fetch = FetchType.EAGER)
+	 @OneToMany(mappedBy="distribution",fetch = FetchType.LAZY)
 	 @OrderBy("stock_item")
 	 private Set<DistributionDetails> details;
 	 
