@@ -50,12 +50,16 @@ var DVIEW = function(){
         var ctotal = 0;
         for(var i=0; i<cdata.length; i++){
             $("#"+cdata[i][0]).text(cdata[i][1]);
-            if(i<=1){
+
                 ctotal = ctotal+ cdata[i][1];
-            }else{
-                $("#totalAmmount").text(cdata[i][1]);
-            }
+
+
         }
+        var ccAmount = countResonse.amount;
+        if(ccAmount == null || ccAmount == "null"){
+            ccAmount= 0;
+        }
+        $("#totalAmmount").text(ccAmount);
         $("#total").text(ctotal)
 
 

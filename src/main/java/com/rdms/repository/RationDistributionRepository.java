@@ -30,7 +30,7 @@ public interface RationDistributionRepository extends JpaRepository< RationDistr
 	@Query(value = "SELECT p.rationCard.cartType, COUNT(p.rationCard.cartType) FROM RationDistribution AS p where p.stock.ID =?1 and p.village.ID =?2 GROUP BY p.rationCard.cartType ")
 	List<Object[]> countDistributedRation(Integer stockId, Integer villageId);
 
-	@Query(value = "SELECT p.totalAmount as amount, SUM(p.totalAmount) FROM RationDistribution AS p where p.stock.ID =?1 and p.village.ID =?2")
+	@Query(value = "SELECT  SUM(p.totalAmount)  FROM RationDistribution AS p where p.stock.ID =?1 and p.village.ID =?2")
 	List<Object[]> getTotalDistributedAmmount(Integer stockId, Integer villageId);
 
 

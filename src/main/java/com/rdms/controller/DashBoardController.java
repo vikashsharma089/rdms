@@ -56,7 +56,7 @@ public class DashBoardController {
             List<String> distributedCards = rationDistributionService.findDistributedCardByStockAndVillageId(stockModel.getID());
             if(!currency.isEmpty()){
                 Object amount[] = currency.get(0);
-                response.put("amount",amount[1] == null ? 0:amount[1]);
+                response.put("amount",amount == null || amount[0] == null ? 0:amount[0]);
             }else{
                 response.put("amount","0");
             }

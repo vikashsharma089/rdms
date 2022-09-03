@@ -56,8 +56,9 @@ public class DistributionController {
         Map < String, Object > response = new HashMap();
         List<Object[]> finalList = new ArrayList<>();
         finalList= rationDistributionService.countDistributedRation(monthId);
-        finalList.addAll(rationDistributionService.getTotalDistributedAmmount(monthId));
+       ;
         response.put("data", finalList);
+        response.put("amount", rationDistributionService.getTotalDistributedAmmount(monthId).get(0));
         return new ResponseEntity < > (response, HttpStatus.OK);
     }
     @RequestMapping(value = "/view/{monthId}", method = RequestMethod.GET, produces = "application/json")
